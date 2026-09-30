@@ -204,7 +204,50 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 .masthead__kicker{font:800 11.5px/1.5 var(--f-sans);letter-spacing:.26em;text-transform:uppercase;color:#E7C68E;text-shadow:0 1px 3px rgba(18,17,13,.9),0 0 18px rgba(18,17,13,.75)}
 .masthead__word{margin-top:6px;font:500 clamp(74px,4.6vw + 40px,128px)/.9 var(--f-serif);letter-spacing:-.014em;color:#F6EFE3;text-shadow:0 2px 34px rgba(18,17,13,.5)}
 .masthead__line{max-width:34em;margin:12px auto 0;font:italic 500 clamp(21px,.7vw + 16px,28px)/1.3 var(--f-serif);color:rgba(246,239,227,.93);text-shadow:0 1px 16px rgba(18,17,13,.55);text-wrap:balance}
-.masthead__cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:18px}
+/* швидке бронювання поверх відео: ті самі дати, що й у календарі нижче */
+.qb{display:none}
+.js .qb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.85fr) auto;align-items:stretch;width:100%;max-width:900px;margin:22px auto 0;padding:7px;border-radius:var(--r);background:rgba(246,239,227,.93);-webkit-backdrop-filter:blur(12px) saturate(1.05);backdrop-filter:blur(12px) saturate(1.05);border:1px solid rgba(255,252,246,.55);box-shadow:0 26px 56px -26px rgba(0,0,0,.75);text-align:left;color:var(--ink)}
+.qb-nojs{margin-top:18px}
+.js .qb-nojs{display:none}
+.qb__f{position:relative;display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;min-height:58px;margin:0;padding:8px 16px;border:0;border-radius:var(--r-sm);background:transparent;font:inherit;text-align:left;color:var(--ink);cursor:pointer;transition:background-color .15s}
+.qb__f + .qb__f::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:1px;background:var(--seam)}
+@media (hover:hover){ .qb__f:hover{background:rgba(228,213,189,.6)} }
+.qb__f:focus-within{background:rgba(228,213,189,.6)}
+.band .qb .qb__f:focus-visible,.band .qb .qb__go:focus-visible{outline:2px solid var(--cognac);outline-offset:2px}
+.qb__f:has(.qb__sel:focus-visible){outline:2px solid var(--cognac);outline-offset:2px}
+.qb__l{font:800 10.5px/1.2 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--cognac)}
+.qb__v{overflow:hidden;font:700 16px/1.25 var(--f-sans);white-space:nowrap;text-overflow:ellipsis;color:var(--ink)}
+.qb__v.is-empty{font-weight:500;color:var(--note)}
+.qb__sel{width:100%;min-width:0;margin:0;padding:0 22px 0 0;border:0;border-radius:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237A4E25' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right center;font:700 16px/1.25 var(--f-sans);color:var(--ink);-webkit-appearance:none;appearance:none;cursor:pointer}
+.qb__sel:focus{outline:none}
+.qb__go{min-height:58px;margin-left:7px;padding:0 24px}
+@media (max-width:760px){
+  .js .qb{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;margin-top:16px;padding:6px}
+  .qb__f{min-height:52px;padding:6px 12px;background:rgba(255,252,246,.78);border:1px solid rgba(205,186,156,.75)}
+  .qb__f + .qb__f::before{display:none}
+  .qb__l{font-size:10px;letter-spacing:.14em}
+  .qb__v,.qb__sel{font-size:15px}
+  .qb__go{min-height:52px;margin:0;padding:0 10px;font-size:12px;letter-spacing:.06em;line-height:1.2;white-space:normal}
+  .qb__go .i{display:none}
+}
+
+/* вибір дат з першого екрана: у вікні той самий календар, що й у формі */
+.pick{position:fixed;inset:0;z-index:96;display:grid;place-items:center;padding:16px;background:rgba(18,17,13,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.pick__card{width:min(660px,100%);max-height:calc(100vh - 32px);max-height:calc(100svh - 32px);overflow:auto;overscroll-behavior:contain;padding:18px 18px 20px;border-radius:var(--r);background:var(--card);border-top:4px solid var(--candle);box-shadow:0 40px 80px -30px rgba(0,0,0,.7);color:var(--ink)}
+.pick__head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.pick__t{font:500 clamp(24px,1vw + 18px,30px)/1.1 var(--f-serif)}
+.pick__body{display:grid;gap:8px}
+.pick__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--seam)}
+.pick__note{display:flex;align-items:flex-start;gap:8px;margin:0;font-size:12.5px;line-height:1.4;color:var(--note)}
+.pick__note .i{width:16px;height:16px;margin-top:1px;color:var(--cognac)}
+.pick__foot .btn{min-height:50px}
+.pick :focus-visible{outline-color:var(--cognac)}
+.pick .cal__d:focus-visible{outline:2px solid var(--cognac);outline-offset:-2px}
+@media (max-width:520px){
+  .pick{align-items:end;padding:0}
+  .pick__card{width:100%;max-height:92vh;max-height:92svh;padding:16px 14px calc(18px + env(safe-area-inset-bottom));border-radius:var(--r) var(--r) 0 0}
+  .pick__foot .btn{width:100%}
+}
 .band .btn--ghost{color:#F6EFE3;border-color:rgba(246,239,227,.6);background:rgba(18,17,13,.2)}
 .band .btn--ghost:hover{background:rgba(246,239,227,.14);border-color:#F6EFE3}
 .rating{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:14px;padding:0 16px;border:1px solid rgba(246,239,227,.4);border-radius:999px;background:rgba(18,17,13,.34);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:600 14px/1.2 var(--f-sans);font-variant-numeric:lining-nums;color:#F6EFE3;text-decoration:none;transition:border-color .2s,background-color .2s}
@@ -223,8 +266,9 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
   .masthead__line{margin-top:10px}
   .band__note{right:64px;bottom:14px;font-size:11.5px}
 }
-@media (max-width:599px){
-  .masthead__cta{flex-direction:column;align-items:stretch;max-width:400px;margin-inline:auto}
+@media (min-width:761px) and (max-height:760px){
+  .js .qb{margin-top:16px}
+  .qb__f,.qb__go{min-height:52px}
 }
 @media (max-width:480px){
   .masthead__sep{display:none}
@@ -462,6 +506,7 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 
 /* бронювання */
 .bron__grid{display:grid;gap:36px}
+.bron__grid > *{min-width:0}
 @media (min-width:1024px){ .bron__grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:72px;align-items:start} }
 .contact{display:grid;gap:14px;margin-top:30px}
 .contact__phone{display:inline-flex;align-items:center;gap:14px;font:500 clamp(32px,1.6vw + 22px,46px)/1 var(--f-serif);font-variant-numeric:lining-nums;color:var(--wool);text-decoration:none}
@@ -529,6 +574,15 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 
 /* календар вільних дат у формі (демо) */
 .cal__demo{display:grid;justify-items:start;gap:10px;padding:14px 16px 15px;border-radius:var(--r-sm);border:1px dashed var(--seam-strong);background:rgba(239,229,211,.5);font-size:13.5px;line-height:1.45;color:var(--bark)}
+/* примітка прототипу для власниці: як підпис під відео, тільки на світлому */
+.proto-note{display:flex;align-items:flex-start;gap:9px;margin:0;padding:10px 12px 11px;border-radius:var(--r-sm);border:1px solid var(--seam);background:rgba(228,213,189,.42);font:400 12.5px/1.5 var(--f-sans);color:var(--note)}
+.proto-note .i{width:16px;height:16px;margin-top:2px;color:var(--cognac)}
+.cal__sum{border-radius:var(--r-sm)}
+.cal__sum.is-flash{animation:sumFlash 1.8s var(--ease)}
+@keyframes sumFlash{0%,25%{background:rgba(226,181,110,.5);box-shadow:0 0 0 6px rgba(226,181,110,.5)}100%{background:rgba(226,181,110,0);box-shadow:0 0 0 6px rgba(226,181,110,0)}}
+.form__or{display:flex;align-items:center;gap:12px;font:700 11.5px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--note)}
+.form__or::before,.form__or::after{content:"";flex:1;height:1px;background:var(--seam)}
+.form .form__viber{min-height:52px;padding:10px 16px;font-size:12.5px;line-height:1.3;white-space:normal}
 .cal__demo .done__tag{margin:0}
 .done .cal__demo{margin-top:22px;font-size:13.5px}
 .cal{display:grid;gap:8px;min-width:0}
@@ -701,6 +755,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   <symbol id="i-lift" viewBox="0 0 24 24"><path d="M2.5 5.5 21.5 2.5M12 4v4M7 8h10a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zM5 13.5h14"/></symbol>
   <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 16.5V12l2.2-5.2A1.5 1.5 0 0 1 6.6 6h10.8a1.5 1.5 0 0 1 1.4.8L21 12v4.5zM3 12h18M6 16.5v2.5M18 16.5v2.5M7 14.3h.01M17 14.3h.01"/></symbol>
   <symbol id="i-mtn" viewBox="0 0 24 24"><path d="M2 20 9 8.5l3.5 5.5 2.5-3.5L22 20zM7.3 11.3l1.7 1.2 1.6-1.4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10.5h16M8.5 3.5V7.5M15.5 3.5V7.5M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></symbol>
   <symbol id="i-sauna" viewBox="0 0 24 24"><path d="M3.5 20.5h17M3.5 15.5h17M6 15.5v5M18 15.5v5M5 11h14M8.5 3.5c-.8 1.1.8 2.2 0 3.4M12 3.5c-.8 1.1.8 2.2 0 3.4M15.5 3.5c-.8 1.1.8 2.2 0 3.4"/></symbol>
 </svg>
 
@@ -747,11 +802,14 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       <p class="masthead__kicker"><span class="nw">Міні-готель</span> <span class="masthead__sep" aria-hidden="true">·</span> <span class="nw">Поляниця, Буковель</span></p>
       <h1 class="masthead__word" id="hero-title">Горянка<span class="sr">, міні-готель у Поляниці, за 2 км від Буковеля</span></h1>
       <p class="masthead__line">За 2 км від Буковеля. Басейн, літня кухня і гори за вікном.</p>
-      <div class="masthead__cta">
-        <a class="btn btn--primary" href="#bron">Обрати дати <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="btn btn--ghost" href="viber://chat?number=%2B380979462375"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Написати у Viber</a>
-      </div>
       <a class="rating" href="#reviews"><span class="stars" aria-hidden="true"><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg></span><span><b>4,6</b> · 138 відгуків у Google</span></a>
+      <div class="qb" id="qb" role="group" aria-label="Перевірити вільні дати">
+        <button class="qb__f" type="button" id="qbIn" aria-haspopup="dialog" aria-controls="pick"><span class="qb__l">Заїзд</span><span class="qb__v is-empty" id="qbInV">Оберіть дату</span></button>
+        <button class="qb__f" type="button" id="qbOut" aria-haspopup="dialog" aria-controls="pick"><span class="qb__l">Виїзд</span><span class="qb__v is-empty" id="qbOutV">Оберіть дату</span></button>
+        <label class="qb__f"><span class="qb__l">Гості</span><select class="qb__sel" id="qbGuests"><option value="1">1 гість</option><option value="2" selected>2 гості</option><option value="3">3 гості</option><option value="4">4 гості</option><option value="5">5 гостей</option><option value="6">6 гостей</option><option value="7">7 гостей</option><option value="8">8 гостей</option></select></label>
+        <button class="btn btn--primary qb__go" type="button" id="qbGo">Перевірити дати <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </div>
+      <a class="btn btn--primary qb-nojs" href="#bron">Обрати дати <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
     <p class="band__note" id="bandNote" hidden><svg class="i" aria-hidden="true"><use href="#i-film"/></svg><span>Настроєве відео зібране для прототипу. У робочій версії тут будуть ваші фото й відео.</span></p>
     <button class="band__pause" id="bandPause" type="button" aria-pressed="false" aria-label="Зупинити відео" hidden><svg class="i i--fill i-pause" viewBox="0 0 14 14" aria-hidden="true"><use href="#i-pause"/></svg><svg class="i i--fill i-play" viewBox="0 0 14 14" aria-hidden="true"><use href="#i-play"/></svg></button>
@@ -1096,10 +1154,6 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
     </div>
     <div class="formcard" data-rv>
       <form class="form" id="bookForm" method="post" action="#" novalidate>
-        <div class="cal__demo" role="note">
-          <p class="done__tag"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Демо календаря</p>
-          <p>Зайняті дати тут умовні. У робочій версії ви позначатимете зайняті дні з телефона, а календар для гостей оновлюватиметься сам.</p>
-        </div>
         <fieldset class="seg">
           <legend>Номер</legend>
           <div class="seg__row">
@@ -1111,6 +1165,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         </fieldset>
         <div class="cal" id="cal">
           <p class="lbl" id="calLbl">Заїзд і виїзд</p>
+          <p class="proto-note" role="note"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg><span>Це календар вільних дат. У прототипі дати умовні. Якщо ви працюєте з Booking або Airbnb, календар можна з’єднати з ними, щоб зайняті дати підтягувалися самі. Це підключаємо окремо, за вашим запитом.</span></p>
           <div class="cal__panel">
             <button class="icon-btn cal__nav cal__nav--prev" type="button" id="calPrev" aria-label="Попередній місяць"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
             <button class="icon-btn cal__nav cal__nav--next" type="button" id="calNext" aria-label="Наступний місяць"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
@@ -1156,6 +1211,9 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         <p class="form__err" id="fErr" role="alert" aria-live="assertive"></p>
         <button class="btn btn--primary" type="submit" id="fSubmit" disabled>Надіслати заявку <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
         <p class="form__fine">Номер телефону потрібен лише для відповіді на заявку.</p>
+        <p class="form__or" aria-hidden="true">або</p>
+        <a class="btn btn--ghost form__viber" id="fViber" href="viber://chat?number=%2B380979462375"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Написати у Viber з цими датами</a>
+        <p class="form__fine" id="fViberHint" aria-live="polite">Текст з датами скопіюється, лишиться вставити його в чат.</p>
       </form>
       <div class="done" id="done" hidden>
         <p class="done__tag"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Прототип</p>
@@ -1263,6 +1321,20 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   <div class="mbar__txt"><b>Стандарт від 1&nbsp;600&nbsp;грн</b><small>за номер за ніч, до 20 жовтня</small></div>
   <a class="mbar__call" href="tel:+380979462375" aria-label="Подзвонити: +380 97 946 23 75"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></a>
   <a class="btn btn--primary" href="#bron">Заявка</a>
+</div>
+
+<div class="pick" id="pick" role="dialog" aria-modal="true" aria-labelledby="pickT" hidden>
+  <div class="pick__card">
+    <div class="pick__head">
+      <p class="pick__t" id="pickT">Оберіть дати заїзду й виїзду</p>
+      <button class="icon-btn" type="button" id="pickX" aria-label="Закрити"><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="pick__body" id="pickBody"></div>
+    <div class="pick__foot">
+      <p class="pick__note"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg><span>У прототипі зайняті дати умовні.</span></p>
+      <button class="btn btn--primary" type="button" id="pickDone">Готово</button>
+    </div>
+  </div>
 </div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Перегляд фото" hidden>
@@ -1639,7 +1711,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       view = first;
       if (nView === 1 && new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate() - today.getDate() < 6) view = addMonths(first, 1);
     }
-    function syncHidden(){ fin.value = selA ? iso(selA) : ''; fout.value = selB ? iso(selB) : ''; }
+    function syncHidden(){ fin.value = selA ? iso(selA) : ''; fout.value = selB ? iso(selB) : ''; qbSync(); }
     function clearDateErr(){
       cal.classList.remove('is-invalid');
       if (dateErr) { err.textContent = ''; dateErr = false; }
@@ -1789,6 +1861,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         else if (v === 'std2' && n > 2) g.value = 2;
         if (f.hidden) { done.hidden = true; f.hidden = false; }
         hint = ''; validate(); showSel(); render(false);
+        revealNow(card);
         card.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
         if (history.replaceState) history.replaceState(null, '', '#bron');
         var r = f.querySelector('input[name="room"]:checked');
@@ -1867,6 +1940,97 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       showSel();
       render(false);
       focusDay();
+    });
+
+    /* Перший екран: швидкий вибір дат. У вікні показуємо той самий календар, що й у формі
+       (переносимо його туди й назад), тож дати, зайнятість і підказки одні й ті самі. */
+    var qbIn = d.getElementById('qbIn'), qbOut = d.getElementById('qbOut');
+    var qbInV = d.getElementById('qbInV'), qbOutV = d.getElementById('qbOutV');
+    var qbG = d.getElementById('qbGuests'), qbGo = d.getElementById('qbGo');
+    var pick = d.getElementById('pick'), pickBody = d.getElementById('pickBody');
+    var calPanel = cal.querySelector('.cal__panel'), calFoot = cal.querySelector('.cal__foot');
+    var pickFrom = null;
+    /* картка форми з'являється з анімацією зсуву: показуємо її одразу, щоб прокрутка не промахнулася */
+    function revealNow(el){
+      if (!el || el.classList.contains('is-in')) return;
+      el.style.transition = 'none';
+      el.classList.add('is-in');
+      void el.offsetWidth;
+      el.style.transition = '';
+    }
+    function qbSync(){
+      if (!qbInV || !qbOutV) return;
+      qbInV.textContent = selA ? shortName(selA) : 'Оберіть дату';
+      qbOutV.textContent = selB ? shortName(selB) : 'Оберіть дату';
+      qbInV.classList.toggle('is-empty', !selA);
+      qbOutV.classList.toggle('is-empty', !selB);
+    }
+    function pickTabs(){
+      return [].filter.call(pick.querySelectorAll('button, [href], select, input, [tabindex]'), function(el){
+        return el.tabIndex >= 0 && !el.disabled && !el.hidden && el.offsetParent !== null;
+      });
+    }
+    function pickOpen(from){
+      pickFrom = from;
+      pickBody.appendChild(calPanel);
+      pickBody.appendChild(calFoot);
+      pick.hidden = false;
+      root.style.overflow = 'hidden';
+      hint = ''; showSel(); render(false);
+      focusDay();
+    }
+    function pickClose(){
+      if (pick.hidden) return;
+      cal.insertBefore(calPanel, fin);
+      cal.insertBefore(calFoot, fin);
+      pick.hidden = true;
+      root.style.overflow = '';
+      if (pickFrom) { try { pickFrom.focus({ preventScroll: true }); } catch (x) { pickFrom.focus(); } }
+    }
+    if (pick && qbIn && qbOut && qbGo && calPanel && calFoot) {
+      qbIn.addEventListener('click', function(){ pickOpen(qbIn); });
+      qbOut.addEventListener('click', function(){ pickOpen(qbOut); });
+      d.getElementById('pickX').addEventListener('click', pickClose);
+      d.getElementById('pickDone').addEventListener('click', pickClose);
+      pick.addEventListener('click', function(e){ if (e.target === pick) pickClose(); });
+      d.addEventListener('keydown', function(e){
+        if (pick.hidden) return;
+        if (e.key === 'Escape') { e.preventDefault(); pickClose(); return; }
+        if (e.key !== 'Tab') return;
+        var t = pickTabs();
+        if (!t.length) return;
+        var i = t.indexOf(d.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); t[t.length - 1].focus(); }
+        else if (!e.shiftKey && (i === -1 || i === t.length - 1)) { e.preventDefault(); t[0].focus(); }
+      });
+      /* «Перевірити дати»: переносимо гостей у форму, гортаємо до календаря і підсвічуємо відповідь */
+      qbGo.addEventListener('click', function(){
+        g.value = Math.max(1, Math.min(MAX_GUESTS, parseInt(qbG.value, 10) || 2));
+        if (f.hidden) { done.hidden = true; f.hidden = false; }
+        hint = ''; validate(); showSel(); render(false);
+        revealNow(f.parentNode);
+        cal.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+        if (history.replaceState) history.replaceState(null, '', '#bron');
+        sumEl.classList.remove('is-flash'); void sumEl.offsetWidth; sumEl.classList.add('is-flash');
+        var b = months.querySelector('[tabindex="0"]');
+        if (b) { try { b.focus({ preventScroll: true }); } catch (x) {} }
+      });
+    }
+
+    /* Viber з датами: відкриваємо чат з господарями, а текст з датами кладемо в буфер обміну */
+    var fViber = d.getElementById('fViber'), fViberHint = d.getElementById('fViberHint');
+    if (fViber && fViberHint) fViber.addEventListener('click', function(){
+      if (!selA || !selB) { fViberHint.textContent = 'Дати можна обрати в календарі вище, тоді текст з ними скопіюється сам.'; return; }
+      var v = roomVal(), n = Math.round((selB - selA) / 864e5);
+      var txt = 'Добрий день! Хочемо забронювати в «Горянці»: заїзд ' + human(fin.value) + ', виїзд ' + human(fout.value) + ' (' + nights(n) + '), гостей: ' + g.value +
+        (v === 'any' ? '.' : ', ' + ROOMS[v].lower + '.') +
+        (transfer.checked ? ' Потрібен трансфер до витягу.' : '') + (sauna.checked ? ' Хочемо сауну на один із вечорів.' : '');
+      var ok = function(){ fViberHint.textContent = 'Текст з датами скопійовано. Вставте його в чат Viber.'; };
+      var no = function(){ fViberHint.textContent = 'Скопіюйте й надішліть у Viber: ' + txt; };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, no);
+        else no();
+      } catch (x) { no(); }
     });
   })();
 })();
