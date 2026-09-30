@@ -2010,6 +2010,11 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         hint = ''; validate(); showSel(); render(false);
         revealNow(f.parentNode);
         cal.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+        /* якщо плавна прокрутка не відбулася (наприклад, вкладка у фоні), докручуємо одразу */
+        setTimeout(function(){
+          var t = cal.getBoundingClientRect().top;
+          if (t < 0 || t > window.innerHeight * 0.6) cal.scrollIntoView({ block: 'start' });
+        }, 1200);
         if (history.replaceState) history.replaceState(null, '', '#bron');
         sumEl.classList.remove('is-flash'); void sumEl.offsetWidth; sumEl.classList.add('is-flash');
         var b = months.querySelector('[tabindex="0"]');
