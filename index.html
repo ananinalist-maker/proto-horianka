@@ -1141,9 +1141,8 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         <a class="contact__phone" href="tel:+380979462375"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>+380 97 946 23 75</a>
         <div class="contact__msgr">
           <a class="btn btn--line" href="viber://chat?number=%2B380979462375"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Viber</a>
-          <a class="btn btn--line" href="https://t.me/+380979462375" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-send"/></svg>Telegram</a>
         </div>
-        <p><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span>Марія, бронювання. Viber і Telegram на цьому ж номері.</span></p>
+        <p><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span>Марія, бронювання. Viber на цьому ж номері.</span></p>
         <p><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><span>вул. Стаїще, 138, Поляниця</span></p>
         <p><svg class="i" aria-hidden="true"><use href="#i-car"/></svg><span>Трансфер до витягу №1 за доплату</span></p>
       </div>
@@ -1195,31 +1194,30 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         </div>
         <label class="check"><input type="checkbox" name="transfer" id="fTransfer"><span>Потрібен трансфер до витягу<small>Трансфер за доплату, господарі скажуть ціну й час.</small></span></label>
         <label class="check"><input type="checkbox" name="sauna" id="fSauna"><span>Хочемо сауну на один із вечорів<small>Господарі скажуть вільний час і ціну.</small></span></label>
-        <div class="row2">
-          <label class="fld"><span class="lbl">Ім’я</span><input class="inp" type="text" name="name" id="fName" autocomplete="name" required placeholder="Як до вас звертатися"></label>
-          <label class="fld"><span class="lbl">Телефон</span><input class="inp" type="tel" name="phone" id="fPhone" autocomplete="tel" inputmode="tel" required placeholder="+380"></label>
-        </div>
+        <label class="fld"><span class="lbl">Ім’я</span><input class="inp" type="text" name="name" id="fName" autocomplete="name" required placeholder="Як до вас звертатися"></label>
         <fieldset class="seg">
-          <legend>Як зручніше отримати відповідь</legend>
+          <legend>Як з вами зв’язатися?</legend>
           <div class="seg__row">
-            <label><input type="radio" name="msgr" value="Дзвінок" checked><span><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>Дзвінок</span></label>
-            <label><input type="radio" name="msgr" value="Viber"><span><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Viber</span></label>
-            <label><input type="radio" name="msgr" value="Telegram"><span><svg class="i" aria-hidden="true"><use href="#i-send"/></svg>Telegram</span></label>
+            <label><input type="radio" name="msgr" value="Дзвінок" checked><span>Дзвінок</span></label>
+            <label><input type="radio" name="msgr" value="Viber"><span>Viber</span></label>
+            <label><input type="radio" name="msgr" value="Telegram"><span>Telegram</span></label>
+            <label><input type="radio" name="msgr" value="WhatsApp"><span>WhatsApp</span></label>
           </div>
         </fieldset>
+        <label class="fld"><span class="lbl" id="fPhoneLbl">Телефон</span><input class="inp" type="tel" name="contact" id="fPhone" autocomplete="tel" inputmode="tel" required placeholder="+380"></label>
         <label class="fld"><span class="lbl">Коментар, якщо потрібно</span><textarea class="inp" name="comment" id="fComment" rows="3" placeholder="Прокат лиж, харчування, приблизний час приїзду"></textarea></label>
         <p class="form__err" id="fErr" role="alert" aria-live="assertive"></p>
         <button class="btn btn--primary" type="submit" id="fSubmit" disabled>Надіслати заявку <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <p class="form__fine">Номер телефону потрібен лише для відповіді на заявку.</p>
+        <p class="form__fine">Контакт потрібен лише для відповіді на заявку.</p>
         <p class="form__or" aria-hidden="true">або</p>
         <a class="btn btn--ghost form__viber" id="fViber" href="viber://chat?number=%2B380979462375"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Написати у Viber з цими датами</a>
         <p class="form__fine" id="fViberHint" aria-live="polite">Текст з датами скопіюється, лишиться вставити його в чат.</p>
       </form>
       <div class="done" id="done" hidden>
         <p class="done__tag"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Прототип</p>
-        <h3 id="doneTitle" tabindex="-1">Так виглядатиме заявка у вашому Telegram</h3>
+        <h3 id="doneTitle" tabindex="-1">Так виглядатиме заявка, яку ви отримаєте</h3>
         <p>Це демо, тож заявку нікуди не надіслано. У робочій версії сайт перед відправкою ще раз перевірить, чи дати досі вільні, і заявка одразу прийде вам.</p>
-        <p class="bubble__h"><svg class="i" aria-hidden="true"><use href="#i-send"/></svg>Telegram</p>
+        <p class="bubble__h"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Заявка з сайту</p>
         <div class="bubble" id="bubble"></div>
         <p class="cal__demo">Далі ви підтверджуєте гостю і позначаєте ці дати зайнятими. Календар на сайті оновиться сам.</p>
         <button class="btn btn--ghost" type="button" id="doneBack">Змінити заявку</button>
@@ -1287,7 +1285,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         <p class="foot__t">Адреса</p>
         <p>вул. Стаїще, 138, Поляниця,<br>Івано-Франківська обл., 78593</p>
         <p><a href="tel:+380979462375">+380 97 946 23 75</a></p>
-        <p><a href="viber://chat?number=%2B380979462375">Viber</a> · <a href="https://t.me/+380979462375" target="_blank" rel="noopener">Telegram</a></p>
+        <p><a href="viber://chat?number=%2B380979462375">Viber</a></p>
       </div>
       <div>
         <p class="foot__t">Розділи</p>
@@ -1870,6 +1868,33 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
     });
     [nm, ph].forEach(function(el){ el.addEventListener('input', function(){ el.removeAttribute('aria-invalid'); }); });
 
+    /* Як з гостем зв’язатися: від вибору залежить підпис і клавіатура поля контакту (для Telegram можна нік) */
+    var phLbl = d.getElementById('fPhoneLbl');
+    var CONTACT = {
+      'Дзвінок': { lbl: 'Телефон', ph: '+380', type: 'tel', ac: 'tel' },
+      'Viber': { lbl: 'Номер у Viber', ph: '+380', type: 'tel', ac: 'tel' },
+      'Telegram': { lbl: 'Телефон або нік у Telegram', ph: '+380 або @нік', type: 'text', ac: 'off' },
+      'WhatsApp': { lbl: 'Номер у WhatsApp', ph: '+380', type: 'tel', ac: 'tel' }
+    };
+    function msgrVal(){ var m = f.querySelector('input[name="msgr"]:checked'); return m ? m.value : 'Дзвінок'; }
+    function contactSync(){
+      var c = CONTACT[msgrVal()] || CONTACT['Дзвінок'];
+      if (phLbl) phLbl.textContent = c.lbl;
+      ph.placeholder = c.ph;
+      if (ph.type !== c.type) ph.type = c.type;
+      ph.setAttribute('inputmode', c.type === 'tel' ? 'tel' : 'text');
+      ph.setAttribute('autocomplete', c.ac);
+      ph.removeAttribute('aria-invalid');
+    }
+    [].forEach.call(f.querySelectorAll('input[name="msgr"]'), function(r){ r.addEventListener('change', contactSync); });
+    contactSync();
+    /* контакт гостя: телефон (від 9 цифр) або для Telegram ще й нік */
+    function contactVal(){
+      var raw = ph.value.trim(), digits = raw.replace(/\D/g, '');
+      if (msgrVal() === 'Telegram' && /^@?[A-Za-z][A-Za-z0-9_]{4,31}$/.test(raw)) return raw.charAt(0) === '@' ? raw : '@' + raw;
+      return digits.length >= 9 ? raw : '';
+    }
+
     function fail(bad, msg, showInCal){
       err.textContent = msg;
       if (bad === cal) {
@@ -1882,7 +1907,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       } else { bad.setAttribute('aria-invalid', 'true'); bad.focus(); }
     }
     function showDone(){
-      var v = roomVal(), n = Math.round((selB - selA) / 864e5), m = f.querySelector('input[name="msgr"]:checked');
+      var v = roomVal(), n = Math.round((selB - selA) / 864e5);
       var roomLine = v === 'any'
         ? 'Номер: будь-який вільний (на ці дати вільні: ' + freeRooms(v, selA, selB).map(function(k){ return ROOMS[k].full; }).join('; ') + ')'
         : 'Номер: ' + ROOMS[v].full;
@@ -1895,8 +1920,8 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         'Трансфер до витягу: ' + (transfer.checked ? 'так, потрібен' : 'не потрібен'),
         'Сауна: ' + (sauna.checked ? 'так, на один із вечорів' : 'не потрібна'),
         'Ім’я: ' + nm.value.trim(),
-        'Телефон: ' + ph.value.trim(),
-        'Відповісти: ' + (m ? m.value : 'Дзвінок')
+        'Як зв’язатися: ' + msgrVal(),
+        'Контакт: ' + contactVal()
       ];
       if (cm.value.trim()) lines.push('Коментар: ' + cm.value.trim());
       bubble.textContent = lines.join('\n');
@@ -1910,12 +1935,14 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       if (checking) return;
       [nm, ph].forEach(function(el){ el.removeAttribute('aria-invalid'); });
       cal.classList.remove('is-invalid');
-      var v = roomVal(), digits = ph.value.replace(/\D/g, '');
+      var v = roomVal();
       if (!selA) return fail(cal, 'Оберіть дату заїзду в календарі.');
       if (!selB) return fail(cal, 'Оберіть дату виїзду в календарі.');
       if (!freeRooms(v, selA, selB).length) { selA = selB = null; syncHidden(); return fail(cal, 'Ці дати вже зайняті. Оберіть, будь ласка, інші.', true); }
       if (!nm.value.trim()) return fail(nm, 'Вкажіть, як до вас звертатися.');
-      if (digits.length < 9) return fail(ph, 'Вкажіть телефон, щоб господарі могли відповісти.');
+      if (!contactVal()) return fail(ph, msgrVal() === 'Telegram'
+        ? 'Вкажіть телефон або нік у Telegram, щоб господарі могли відповісти.'
+        : 'Вкажіть номер телефону, щоб господарі могли відповісти.');
       err.textContent = ''; dateErr = false;
       /* як на робочому сайті: перед відправкою ще раз звіряємо дати з календарем */
       checking = true;
