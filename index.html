@@ -23,8 +23,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="img/hero-desktop.jpg" media="(min-width: 761px)" fetchpriority="high">
-<link rel="preload" as="image" href="img/hero-mobile.jpg" media="(max-width: 760px)" fetchpriority="high">
+<link rel="preload" as="image" href="hero-karpaty/hero_full_1280x720_first.webp" media="(min-width: 761px) and (prefers-reduced-motion: no-preference)" fetchpriority="high">
+<link rel="preload" as="image" href="hero-karpaty/hero_full_mobile_750x990_first.webp" media="(max-width: 760px) and (prefers-reduced-motion: no-preference)" fetchpriority="high">
 <script>document.documentElement.classList.add('js');</script>
 <script type="application/ld+json">
 {
@@ -74,7 +74,7 @@
   --ink:#1C1812; --bark:#5E4A35; --note:#75614B;
   --cognac:#7A4E25; --cognac-2:#8A5A2C;
   --spruce:#243124; --night:#12110D; --candle:#E2B56E;
-  --seam:#CDBA9C; --seam-strong:#9A8264; --fog:#B8A58A; --on-dark:#EFE5D3;
+  --seam:#CDBA9C; --seam-strong:#9A8264; --fog:#B8A58A; --on-dark:#EFE5D3; --snow:#F4F1EA;
   --f-serif:"Cormorant Garamond","Times New Roman",Georgia,serif;
   --f-sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -120,6 +120,23 @@ p{text-wrap:pretty}
 .tone-dark{position:relative;isolation:isolate;background:var(--glow),var(--spruce);color:var(--on-dark)}
 .tone-dark::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url(decor/grain-256.png);opacity:.5}
 .tone-sand{background:var(--linen)}
+/* Зимова тема. Лісова кромка і засніжені пагорби: верх секції вирізано маскою з силуетів смерек,
+   тож дерева того самого кольору й фактури, що й секція, без шва. Висота кромки вписана у відступ попередньої секції, на текст не заходить. */
+@supports ((-webkit-mask-image:none) or (mask-image:none)){
+  .edge-forest,.edge-hills{margin-top:calc(-1 * var(--edge));padding-top:calc(var(--section) + var(--edge));
+    -webkit-mask:var(--edge-img) var(--edge-x,0px) 0/var(--edge-w,auto) var(--edge) repeat-x,linear-gradient(#000,#000) 0 var(--edge)/100% 100% no-repeat;
+    mask:var(--edge-img) var(--edge-x,0px) 0/var(--edge-w,auto) var(--edge) repeat-x,linear-gradient(#000,#000) 0 var(--edge)/100% 100% no-repeat}
+  .edge-forest{--edge:calc(var(--section) * .74);--edge-img:url(decor/edge-forest.svg)}
+  .edge-hills{--edge:calc(var(--section) * .5);--edge-img:url(decor/edge-hills.svg)}
+  /* на телефоні кромка нижча, тож малюнок трохи розтягуємо вшир, щоб смереки не перетворилися на траву */
+  @media (max-width:760px){ .edge-forest{--edge-w:calc(var(--edge) * 25)} .edge-hills{--edge-w:calc(var(--edge) * 22)} }
+}
+.faq-sec{background:var(--wool)}
+/* смереки на снігу під пагорбами (секція «Зима і лижі»): окремий малюнок у верхньому відступі, до тексту не дістає */
+.grove{position:absolute;z-index:0;left:0;top:calc(var(--edge,0px) * .55);width:100%;height:clamp(66px,7.8vw,112px);pointer-events:none}
+.grove__f{fill:var(--spruce)}
+.grove__b{fill:#6F7B6C;fill-opacity:.62}
+.grove__sh{fill:var(--spruce);fill-opacity:.1}
 
 .decor{position:absolute;z-index:2;height:auto;max-width:none;pointer-events:none;-webkit-user-select:none;user-select:none;filter:var(--decor-shadow)}
 .lizhnyk{height:24px;background:url(decor/lizhnyk-tile-512.jpg) 0 0/auto 81px repeat-x;box-shadow:inset 0 1px 0 rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.25)}
@@ -186,14 +203,43 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 
 /* перший екран: ролик на весь екран, текст поверх */
 .hero{position:relative;background:var(--wool)}
-.band{position:relative;overflow:hidden;isolation:isolate;width:100%;height:calc(100vh - var(--hero-top,110px));height:calc(100svh - var(--hero-top,110px));min-height:540px;max-height:1100px;background:var(--night)}
+:root{--ht0:108.5px}
+@media (max-width:1023px){ :root{--ht0:100.5px} }
+@media (max-width:679px){ :root{--ht0:118px} }
+@media (max-width:363px){ :root{--ht0:135.5px} }
+/* --ht0: висота смужки прототипу й шапки до того, як скрипт її поміряє (щоб перший кадр уже був правильної висоти) */
+.band{position:relative;overflow:hidden;isolation:isolate;width:100%;height:calc(100vh - var(--hero-top,var(--ht0)));height:calc(100svh - var(--hero-top,var(--ht0)));min-height:540px;max-height:1100px;background:var(--night)}
 .band__poster,.band__poster img,.band__video{position:absolute;inset:0;width:100%;height:100%;max-width:none}
 .band__poster img,.band__video{object-fit:cover}
-.band__video{opacity:0;transition:opacity .9s ease}
+/* поки постер вантажиться, під ним розмита мініатюра того ж кадру (вбудована, пів кілобайта) */
+@media (prefers-reduced-motion:no-preference){
+  .band__poster::before{content:"";position:absolute;inset:-48px;background:url(data:image/webp;base64,UklGRoQBAABXRUJQVlA4IHgBAADwCACdASowABsAPtFao0woJSMiKrgN+QAaCWIArk/fQG0gG4Zpg2fDq0mLI+beQSFB4agSpJewv6006tZOG6aXVWzcU5+baO/KJ+gNmUxgoAD++3MqM0WrtZ9xeXtruiPBhAjlhhBPo7nD3yDtrRo2Tx/aULppyOQtS92O7kouIPA1jksZhyvttmXKnze7Gl6WY5so7FLFJSNSfd3BqrIZCEov6EspkeTJYvCSA4HEbytf4k1bPBg9bL4fTTraRiMjVT0gYgxraSzJwcepKMziuPtf/9naAHnHgBRY2H7DrLe+T2emxaMBDd8rhmjg25UhOuUTvdtSoFpWO6HAWtMIhYuMH0hKbodowaDbTbFgfr3QHsPpdoci9EY617U5iTbgLr+IcBkQxl2VcteYMWFkW2ndI4CGsTDlg5hIS+xJLZKKU11jkxZPq/rU+/ODHEDxx8EtnnUJhmGpJai3BSeTMN/T27sXOe7dD1qJTdlCG0/gzo+MP8AA) 50% 50%/cover no-repeat;filter:blur(18px)}
+}
+@media (prefers-reduced-motion:no-preference) and (max-width:760px){
+  .band__poster::before{background-image:url(data:image/webp;base64,UklGRmwBAABXRUJQVlA4IGABAACQBwCdASoeACgAPtFcqU4oJKQiKrgKAQAaCUAWw15DuFrkmFVZNNQX/B6xkeFS62ofqceA6yQc226FR8TcQ5+4IDCoicgA/v4W09oeBbz438cJdvSsEsLCWaeGhmkMpjRLverwXcJPGJZcC+jdg70aEPX1uPLT9Rc0mFKy027bGsZOdxX0CY1b9kHjjXNF01W8kRfYShswPaWkAhMppD84hfp0Jww176/OHvrM/AUIz21nRmg494F8nh0cQ+rgtLp2FRVjtKO/nvoOvLWRxf3bUJhX0cfQfbyz38qyOItTr13FyM/X7IEqytcvPNu3P6pE4KSIUoEMmdtYZntGYm43+5cgFQVNK449fYRr8gWW/iFko3p205fTlj4aeA5DoC5xyT21R6sFySsa5zDrz9AWNXB9Z7e2JGFL5Ip6TjTSJdD1BcCic2+gWS5/EtoWC5enoAjcxnHpq/enuMzRgAAA)}
+}
+/* постер = перший кадр цього ж ролика, тож відео вмикаємо без переходу: стик непомітний */
+.band__video{opacity:0}
 .band.is-playing .band__video{opacity:1}
 .band__scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,rgba(18,17,13,.8) 0%,rgba(18,17,13,.46) 36%,rgba(18,17,13,.14) 62%,rgba(18,17,13,.3) 100%)}
-/* поки відео не грає, видно світле фото фасаду: робимо низ темнішим, щоб текст читався */
-.band:not(.is-playing) .band__scrim{background:linear-gradient(to top,rgba(18,17,13,.85) 0%,rgba(18,17,13,.7) 50%,rgba(18,17,13,.45) 68%,rgba(18,17,13,.2) 82%,rgba(18,17,13,.3) 100%)}
+/* при «зменшити рух» відео немає, замість кадру світле фото фасаду: низ темніший, щоб текст читався */
+@media (prefers-reduced-motion:reduce){
+  .band__scrim{background:linear-gradient(to top,rgba(18,17,13,.85) 0%,rgba(18,17,13,.7) 50%,rgba(18,17,13,.45) 68%,rgba(18,17,13,.2) 82%,rgba(18,17,13,.3) 100%)}
+  .band .band__note{display:none}
+  .band .masthead .mh{--mh-d:0s}
+}
+/* надпис першого екрана з'являється, коли ролик уже грає (або за запасним таймером); рядок бронювання видно одразу */
+.masthead__kicker{--mh-d:.3s}
+.masthead__word{--mh-d:.38s}
+.masthead__line{--mh-d:.52s}
+.masthead .rating{--mh-d:.66s}
+@keyframes mhShow{to{opacity:1;transform:none}}
+.js .band:not(.is-ready) .mh{opacity:0;transform:translateY(14px);pointer-events:none;animation:mhShow 1s var(--ease) 4s forwards}
+.js .band:not(.is-ready) .band__note{opacity:0;animation:mhShow 1s var(--ease) 4s forwards}
+.js .band.is-ready .mh{transition:opacity 1.1s var(--ease) var(--mh-d),transform 1.3s var(--ease) var(--mh-d)}
+.js .band.is-ready .rating.mh{transition:opacity 1.1s var(--ease) var(--mh-d),transform 1.3s var(--ease) var(--mh-d),border-color .2s,background-color .2s}
+.js .band.is-ready .band__note{transition:opacity 1s var(--ease) .5s}
+.js .band .masthead:focus-within .mh{opacity:1;transform:none;pointer-events:auto;animation:none}
 .band::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 120px rgba(18,17,13,.32),inset 0 -40px 60px -40px rgba(18,17,13,.4)}
 .band__pause{position:absolute;z-index:4;right:max(12px,calc((100% - 1240px) / 2 + var(--gutter) - 8px));bottom:14px;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(239,229,211,.5);background:rgba(18,17,13,.34);color:var(--wool);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background-color .2s,border-color .2s}
 .band__pause:hover{background:rgba(18,17,13,.55);border-color:var(--wool)}
@@ -224,6 +270,34 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 .qb__sel{width:100%;min-width:0;margin:0;padding:0 22px 0 0;border:0;border-radius:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237A4E25' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right center;font:700 16px/1.25 var(--f-sans);color:var(--ink);-webkit-appearance:none;appearance:none;cursor:pointer}
 .qb__sel:focus{outline:none}
 .qb__go{min-height:58px;margin-left:7px;padding:0 24px}
+/* гості: дорослі, діти й вік дітей. На широкому екрані поля стоять у рядку, на вужчому компактна кнопка «2 дорослих · 0 дітей» з віконцем */
+.qb__in{width:100%;min-width:0;margin:0;padding:0;border:0;border-radius:0;background:transparent;font:700 16px/1.25 var(--f-sans);color:var(--ink);-webkit-appearance:none;appearance:none}
+.qb__in::placeholder{font-weight:500;color:var(--note)}
+.qb__in:focus{outline:none}
+.qb__f:has(.qb__in:focus-visible){outline:2px solid var(--cognac);outline-offset:2px}
+@media (min-width:1024px){
+  .js .qb{grid-template-columns:minmax(0,1.15fr) minmax(0,1.15fr) minmax(0,.62fr) minmax(0,.62fr) auto;max-width:980px}
+  .js .qb.has-kids{grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,.58fr) minmax(0,.58fr) minmax(0,.95fr) auto;max-width:1080px}
+  .qb__party,.qb__pop{display:contents}
+  .qb__pbtn,.qb__pdone{display:none}
+  .qb__party .qb__f::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:1px;background:var(--seam)}
+}
+@media (max-width:1023px){
+  .js .qb{position:relative}
+  .qb__party{display:flex;min-width:0}
+  .qb__pbtn{flex:1}
+  .qb__pop{display:none;position:absolute;z-index:6;right:0;bottom:calc(100% + 8px);width:min(420px,100%);grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:10px;border-radius:var(--r);background:var(--card);border:1px solid rgba(255,252,246,.6);box-shadow:0 26px 56px -20px rgba(0,0,0,.75)}
+  .qb__party.is-open .qb__pop{display:grid}
+  .qb__pop .qb__f{min-height:56px;padding:8px 12px;background:var(--paper);border:1px solid var(--seam)}
+  .qb__pop .qb__f::before{display:none}
+  .qb__pop .qb__sel,.qb__pop .qb__in{font-size:16px}
+  .qb__ages,.qb__pdone{grid-column:1 / -1}
+  .qb__pdone{min-height:48px}
+}
+@media (min-width:761px) and (max-width:1023px){
+  .js .qb{grid-template-columns:minmax(0,.9fr) minmax(0,.9fr) minmax(0,1.25fr) auto}
+  .qb__pbtn::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:1px;background:var(--seam)}
+}
 @media (max-width:760px){
   .js .qb{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;margin-top:16px;padding:6px}
   .qb__f{min-height:52px;padding:6px 12px;background:rgba(255,252,246,.78);border:1px solid rgba(205,186,156,.75)}
@@ -232,6 +306,10 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
   .qb__v,.qb__sel{font-size:15px}
   .qb__go{min-height:52px;margin:0;padding:0 10px;font-size:12px;letter-spacing:.06em;line-height:1.2;white-space:normal}
   .qb__go .i{display:none}
+  /* «2 дорослих · 0 дітей» у вузькій клітинці: два рядки, без крапки */
+  .qb__pbtn .qb__v{font-size:14px;line-height:1.2;white-space:normal}
+  .qb__pbtn .qb__v span{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .qb__pbtn .qb__v .qb__dot{display:none}
 }
 
 /* вибір дат з першого екрана: у вікні той самий календар, що й у формі */
@@ -263,7 +341,7 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
   .masthead__line{margin-top:10px}
 }
 @media (max-width:760px){
-  .band{height:calc(100vh - var(--hero-top,120px));height:calc(100svh - var(--hero-top,120px));min-height:560px;max-height:none}
+  .band{height:calc(100vh - var(--hero-top,var(--ht0)));height:calc(100svh - var(--hero-top,var(--ht0)));min-height:560px;max-height:none}
   .masthead{padding-bottom:62px}
   .masthead__word{margin-top:4px}
   .masthead__line{margin-top:10px}
@@ -347,7 +425,7 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 .split .lead{margin-top:0}
 @media (min-width:1024px){ .split{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:end} }
 .decor--cone{display:none}
-@media (min-width:1024px){ .decor--cone{display:block;top:clamp(26px,3vw,44px);right:clamp(-26px,-1vw,-8px);width:clamp(96px,8vw,128px);transform:rotate(-24deg)} }
+@media (min-width:1024px){ .decor--cone{display:block;top:calc(var(--edge,0px) + clamp(26px,3vw,44px));right:clamp(-26px,-1vw,-8px);width:clamp(96px,8vw,128px);transform:rotate(-24deg)} }
 .seasons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:clamp(36px,4.5vw,60px)}
 .season{position:relative;isolation:isolate;aspect-ratio:3/4;border-radius:var(--r-sm);overflow:hidden;background:rgba(18,17,13,.3)}
 .season img{width:100%;height:100%;object-fit:cover;filter:var(--photo);transition:transform 1.2s var(--ease)}
@@ -375,6 +453,28 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 .also dt{margin-right:8px;font:800 11px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--fog)}
 .also dd{padding:8px 13px;border-radius:var(--r-sm);border:1px solid rgba(239,229,211,.22);background:rgba(239,229,211,.05);font-size:14px;line-height:1.1;color:var(--on-dark)}
 .also--paid dd{border-style:dashed}
+
+/* зима і лижі */
+.winter{background:var(--snow)}
+.winter .split{align-items:end}
+.winter__ph{margin:clamp(32px,4vw,56px) 0 0}
+.winter__img{position:relative;isolation:isolate;aspect-ratio:1800/857;border-radius:var(--r);overflow:hidden;background:#C9CFD1;box-shadow:var(--shadow)}
+.winter__img::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px rgba(74,44,18,.18)}
+.winter__img img{width:100%;height:100%;object-fit:cover;filter:var(--photo)}
+.winter__ph figcaption{margin-top:10px;font-size:12px;line-height:1.5;text-align:right;color:var(--note)}
+.winter__ph figcaption a{text-decoration-color:rgba(117,97,75,.45);text-underline-offset:2px}
+.winter__facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(28px,3.5vw,44px);border-top:1px solid var(--seam)}
+.winter__facts li{display:grid;grid-template-columns:24px minmax(0,1fr);column-gap:12px;row-gap:3px;padding:20px 18px 0 0}
+.winter__facts .i{grid-row:span 2;width:22px;height:22px;margin-top:3px;color:var(--cognac)}
+.winter__facts b{font:500 25px/1.1 var(--f-serif);font-variant-numeric:lining-nums}
+.winter__facts span{font-size:14.5px;line-height:1.4;color:var(--bark)}
+@media (max-width:900px){ .winter__facts{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:760px){
+  .winter__img{aspect-ratio:4/3}
+  .winter__img img{object-position:68% 50%}
+  .winter__ph figcaption{text-align:left}
+}
+@media (max-width:420px){ .winter__facts{grid-template-columns:minmax(0,1fr)} .winter__facts li{padding-right:0} }
 
 /* фото */
 .gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(150px,15.5vw,212px);grid-auto-flow:dense;gap:10px}
@@ -519,7 +619,7 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 .contact__msgr .i{color:var(--candle)}
 .contact p{display:flex;align-items:flex-start;gap:12px;padding-top:14px;border-top:1px solid rgba(239,229,211,.15);font-size:15px;line-height:1.45;color:var(--on-dark)}
 .contact p .i{margin-top:1px;color:var(--candle)}
-.still{position:relative;height:118px;margin-top:10px}
+.still{position:relative;height:118px;margin-top:10px;pointer-events:none}
 .still img{position:absolute;height:auto;filter:var(--decor-shadow)}
 .still .c1{left:0;top:30px;width:132px;transform:rotate(-8deg)}
 .still .c2{left:124px;top:44px;width:104px;transform:rotate(13deg)}
@@ -536,6 +636,7 @@ h3{font:500 clamp(24px,1.2vw + 16px,30px)/1.1 var(--f-serif)}
 @media (max-width:520px){ .row2:not(.row2--keep){grid-template-columns:minmax(0,1fr)} }
 .fld{display:grid;gap:7px;min-width:0}
 .lbl,.seg legend{padding:0;font:700 13px/1.2 var(--f-sans);color:var(--ink)}
+.lbl__opt{margin-left:6px;font-weight:400;font-size:12.5px;color:var(--note)}
 .inp{width:100%;min-width:0;height:52px;padding:0 14px;border-radius:var(--r-sm);border:1px solid var(--seam-strong);background:var(--paper);color:var(--ink);font:500 16px/1.2 var(--f-sans);-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s}
 .inp::placeholder{color:#8E7B64}
 .inp:focus{outline:none;border-color:var(--cognac);box-shadow:0 0 0 4px rgba(122,78,37,.15)}
@@ -674,6 +775,42 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 @media (min-width:1024px){ .mbar{display:none} }
 @media (max-width:370px){ .mbar{padding-left:12px} .mbar__txt b{font-size:13.5px} .mbar .btn{padding:0 14px} }
 
+/* зимовий декор: канатна дорога, лижі з палицями, сніжинки, хребет з Петросом і Говерлою */
+.lift{position:absolute;z-index:1;left:0;right:0;top:0;height:var(--section);color:var(--bark);opacity:.62;pointer-events:none}
+.lift__cable{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lift__cable path{fill:none;stroke:currentColor;stroke-width:1.2;vector-effect:non-scaling-stroke}
+.lift__chair{position:absolute;left:var(--x);top:calc(var(--section) * var(--y) / 128);height:calc(var(--section) * .5);width:auto;aspect-ratio:44/60;transform:translate(-50%,-2px)}
+.flake{position:absolute;z-index:1;width:var(--s,14px);height:var(--s,14px);color:#8E9EA3;opacity:.7;pointer-events:none}
+.flakes-dark .flake{color:var(--candle);opacity:.38}
+.still .skis{display:none}
+.still .flake{display:none}
+@media (min-width:1024px){
+  .still .flake{display:block}
+  .still .fl-1{--s:22px;left:170px;top:70px}
+  .still .fl-2{--s:14px;left:244px;top:150px}
+  .still .fl-3{--s:17px;left:330px;top:96px}
+}
+@media (min-width:1024px){
+  .still{height:400px}
+  .still .skis{display:block;position:absolute;left:4px;bottom:6px;height:372px;width:auto;filter:var(--decor-shadow);transform:rotate(-3deg);transform-origin:50% 100%}
+  .still .c1{left:92px;top:auto;bottom:-4px;width:190px}
+  .still .c2{left:262px;top:auto;bottom:8px;width:146px}
+}
+.foot__top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px 48px}
+.foot__ridge{display:block;flex:1 1 100%;width:100%;max-width:520px;height:auto;color:var(--candle);pointer-events:none;overflow:visible}
+.foot__ridge .rb{fill:none;stroke:currentColor;stroke-opacity:.55;stroke-width:1.3;vector-effect:non-scaling-stroke}
+.foot__ridge .rf{fill:none;stroke:currentColor;stroke-opacity:.26;stroke-width:1.2;vector-effect:non-scaling-stroke}
+.foot__ridge .rc{fill:none;stroke:currentColor;stroke-opacity:.5;stroke-width:1;stroke-dasharray:2 3;vector-effect:non-scaling-stroke}
+.foot__ridge .rl{fill:none;stroke:currentColor;stroke-opacity:.5;stroke-width:1;vector-effect:non-scaling-stroke}
+.foot__ridge text{fill:var(--fog);font:italic 500 40px var(--f-serif);letter-spacing:.01em}
+@media (min-width:768px){ .foot__ridge text{font-size:26px} }
+@media (min-width:1024px){
+  .foot__top{flex-wrap:nowrap}
+  .foot__brand{flex:0 0 auto}
+  .foot__ridge{flex:0 1 620px;width:620px;max-width:52%;margin-bottom:6px}
+  .foot__ridge text{font-size:21px}
+}
+
 /* перегляд фото */
 .lb{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:64px 12px 72px;background:rgba(18,17,13,.95);color:var(--wool)}
 .lb__fig{display:grid;justify-items:center;gap:14px;max-width:min(1280px,100%)}
@@ -759,6 +896,8 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 16.5V12l2.2-5.2A1.5 1.5 0 0 1 6.6 6h10.8a1.5 1.5 0 0 1 1.4.8L21 12v4.5zM3 12h18M6 16.5v2.5M18 16.5v2.5M7 14.3h.01M17 14.3h.01"/></symbol>
   <symbol id="i-mtn" viewBox="0 0 24 24"><path d="M2 20 9 8.5l3.5 5.5 2.5-3.5L22 20zM7.3 11.3l1.7 1.2 1.6-1.4"/></symbol>
   <symbol id="i-cal" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10.5h16M8.5 3.5V7.5M15.5 3.5V7.5M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></symbol>
+<symbol id="d-flake" viewBox="-12 -12 24 24"><path fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round" d="M0 0L0-10.5M0-4.6l-2.68-2.09M0-4.6l2.68-2.09M0-7.6l-1.89-1.48M0-7.6l1.89-1.48M0 0L9.09-5.25M3.98-2.3l0.47-3.37M3.98-2.3l3.15 1.27M6.58-3.8l0.33-2.38M6.58-3.8l2.23 0.9M0 0L9.09 5.25M3.98 2.3l3.15-1.27M3.98 2.3l0.47 3.37M6.58 3.8l2.23-0.9M6.58 3.8l0.33 2.38M0 0L0 10.5M0 4.6l2.68 2.09M0 4.6l-2.68 2.09M0 7.6l1.89 1.48M0 7.6l-1.89 1.48M0 0L-9.09 5.25M-3.98 2.3l-0.47 3.37M-3.98 2.3l-3.15-1.27M-6.58 3.8l-0.33 2.38M-6.58 3.8l-2.23-0.9M0 0L-9.09-5.25M-3.98-2.3l-3.15 1.27M-3.98-2.3l-0.47-3.37M-6.58-3.8l-2.23 0.9M-6.58-3.8l-0.33-2.38"/><circle r="1.3" fill="none" stroke="currentColor" stroke-width=".8"/></symbol>
+  <symbol id="d-chair" viewBox="0 0 44 60"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17.4 1.4h9.2l-1.5 3.8h-6.2z" stroke-width="1.3"/><path d="M22 5.2V20c0 6.4-4.6 9.2-9.2 10.6" stroke-width="1.6"/><path d="M12.8 30.6 11 47h21.6q2.4 0 2.4 2.4" stroke-width="1.9"/><path d="M22 13.2c5.2-.4 10.4.9 13.4 4.6" stroke-width="1.2"/><path d="M29.6 47.4l2.6 8.4h-8.6" stroke-width="1.2"/></g></symbol>
   <symbol id="i-sauna" viewBox="0 0 24 24"><path d="M3.5 20.5h17M3.5 15.5h17M6 15.5v5M18 15.5v5M5 11h14M8.5 3.5c-.8 1.1.8 2.2 0 3.4M12 3.5c-.8 1.1.8 2.2 0 3.4M15.5 3.5c-.8 1.1.8 2.2 0 3.4"/></symbol>
 </svg>
 
@@ -783,6 +922,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   <nav class="menu" id="menu" hidden aria-label="Меню">
     <a href="#rooms">Номери і ціни <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <a href="#territory">Басейн і територія <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <a href="#winter">Зима і лижі <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <a href="#gallery">Фото <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <a href="#place">Як дістатися <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <a href="#reviews">Відгуки <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -795,27 +935,59 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="band" id="band">
+    <!-- постер = перший кадр ролика; при «зменшити рух» відео не буде, тоді фото фасаду -->
     <picture class="band__poster">
-      <source media="(max-width: 760px)" srcset="img/hero-mobile.jpg" width="750" height="990">
-      <img src="img/hero-desktop.jpg" width="1200" height="675" alt="Фасад садиби «Горянка»: жовтий будинок з вивіскою і дерев’яними балконами" fetchpriority="high" decoding="async">
+      <source media="(prefers-reduced-motion: reduce) and (max-width: 760px)" srcset="img/hero-mobile.jpg" width="750" height="990">
+      <source media="(prefers-reduced-motion: reduce)" srcset="img/hero-desktop.jpg" width="1200" height="675">
+      <source media="(max-width: 760px)" srcset="hero-karpaty/hero_full_mobile_750x990_first.webp" width="750" height="990">
+      <img src="hero-karpaty/hero_full_1280x720_first.webp" width="1280" height="720" alt="" fetchpriority="high" decoding="async">
     </picture>
     <video class="band__video" id="bandVideo" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
     <div class="band__scrim" aria-hidden="true"></div>
     <div class="wrap masthead">
-      <p class="masthead__kicker"><span class="nw">Міні-готель</span> <span class="masthead__sep" aria-hidden="true">·</span> <span class="nw">Поляниця, Буковель</span></p>
-      <h1 class="masthead__word" id="hero-title">Горянка<span class="sr">, міні-готель у Поляниці, за 2 км від Буковеля</span></h1>
-      <p class="masthead__line">За 2 км від Буковеля. Басейн, літня кухня і гори за вікном.</p>
-      <a class="rating" href="#reviews"><span class="stars" aria-hidden="true"><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg></span><span><b>4,6</b> · 138 відгуків у Google</span></a>
+      <p class="masthead__kicker mh"><span class="nw">Міні-готель</span> <span class="masthead__sep" aria-hidden="true">·</span> <span class="nw">Поляниця, Буковель</span></p>
+      <h1 class="masthead__word mh" id="hero-title">Горянка<span class="sr">, міні-готель у Поляниці, за 2 км від Буковеля</span></h1>
+      <p class="masthead__line mh">За 2 км від Буковеля. Басейн, літня кухня і гори за вікном.</p>
+      <a class="rating mh" href="#reviews"><span class="stars" aria-hidden="true"><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg><svg class="i i--fill"><use href="#i-star"/></svg></span><span><b>4,6</b> · 138 відгуків у Google</span></a>
       <div class="qb" id="qb" role="group" aria-label="Перевірити вільні дати">
         <button class="qb__f" type="button" id="qbIn" aria-haspopup="dialog" aria-controls="pick"><span class="qb__l">Заїзд</span><span class="qb__v is-empty" id="qbInV">Оберіть дату</span></button>
         <button class="qb__f" type="button" id="qbOut" aria-haspopup="dialog" aria-controls="pick"><span class="qb__l">Виїзд</span><span class="qb__v is-empty" id="qbOutV">Оберіть дату</span></button>
-        <label class="qb__f"><span class="qb__l">Гості</span><select class="qb__sel" id="qbGuests"><option value="1">1 гість</option><option value="2" selected>2 гості</option><option value="3">3 гості</option><option value="4">4 гості</option><option value="5">5 гостей</option><option value="6">6 гостей</option><option value="7">7 гостей</option><option value="8">8 гостей</option></select></label>
+        <div class="qb__party" id="qbParty">
+          <button class="qb__f qb__pbtn" type="button" id="qbPartyBtn" aria-expanded="false" aria-controls="qbPop"><span class="qb__l">Гості</span><span class="qb__v" id="qbPartyV"><span>2 дорослих</span><span class="qb__dot"> · </span><span>0 дітей</span></span></button>
+          <div class="qb__pop" id="qbPop">
+            <label class="qb__f"><span class="qb__l">Дорослі</span><select class="qb__sel" id="qbAd"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label>
+            <label class="qb__f"><span class="qb__l">Діти</span><select class="qb__sel" id="qbKids"><option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></label>
+            <label class="qb__f qb__ages" id="qbAgesFld" hidden><span class="qb__l">Вік дітей</span><input class="qb__in" type="text" id="qbAges" placeholder="напр. 5, 8" autocomplete="off" maxlength="40"></label>
+            <button class="btn btn--primary qb__pdone" type="button" id="qbPopDone">Готово</button>
+          </div>
+        </div>
         <button class="btn btn--primary qb__go" type="button" id="qbGo">Перевірити дати <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       </div>
       <a class="btn btn--primary qb-nojs" href="#bron">Обрати дати <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
-    <p class="band__note" id="bandNote" hidden><svg class="i" aria-hidden="true"><use href="#i-film"/></svg><span>Настроєве відео зібране для прототипу. У робочій версії тут будуть ваші фото й відео.</span></p>
+    <p class="band__note" id="bandNote"><svg class="i" aria-hidden="true"><use href="#i-film"/></svg><span>Настроєве відео зібране для прототипу. У робочій версії тут будуть ваші фото й відео.</span></p>
     <button class="band__pause" id="bandPause" type="button" aria-pressed="false" aria-label="Зупинити відео" hidden><svg class="i i--fill i-pause" viewBox="0 0 14 14" aria-hidden="true"><use href="#i-pause"/></svg><svg class="i i--fill i-play" viewBox="0 0 14 14" aria-hidden="true"><use href="#i-play"/></svg></button>
+    <script>
+    /* Ролик підключаємо одразу після першого екрана, не чекаючи решти сторінки (скрипт стоїть тут, а не вище,
+       щоб рядок бронювання вже був на першому кадрі). Надпис показуємо, коли ролик справді заграв;
+       запасний таймер 2,5 с від початку завантаження, а при «зменшити рух», економії трафіку чи якщо відео не може грати, одразу. */
+    (function(){
+      var d = document, box = d.getElementById('band'), v = d.getElementById('bandVideo'), shown = false;
+      function mq(q){ return !!(window.matchMedia && window.matchMedia(q).matches); }
+      function ready(){ if (!shown) { shown = true; box.classList.add('is-ready'); } }
+      /* висота першого екрана = вікно мінус смужка прототипу й шапка (точне значення замість --ht0) */
+      d.documentElement.style.setProperty('--hero-top', (box.getBoundingClientRect().top + (window.pageYOffset || 0)) + 'px');
+      /* при «зменшити рух» під текстом фото фасаду, тож даємо йому опис */
+      if (mq('(prefers-reduced-motion: reduce)')) { var pim = box.querySelector('.band__poster img'); if (pim) pim.alt = 'Фасад садиби «Горянка»: жовтий будинок з вивіскою і дерев’яними балконами'; }
+      if (mq('(prefers-reduced-motion: reduce)') || (navigator.connection && navigator.connection.saveData) || !v || !v.canPlayType || !v.canPlayType('video/mp4')) { ready(); return; }
+      setTimeout(ready, Math.max(0, 2500 - (window.performance && performance.now ? performance.now() : 0)));
+      v.addEventListener('playing', function(){ box.classList.add('is-playing'); ready(); });
+      v.addEventListener('error', ready);
+      v.muted = true; v.defaultMuted = true;
+      v.src = mq('(max-width: 760px)') ? 'hero-karpaty/hero_full_mobile_750x990.mp4' : 'hero-karpaty/hero_full_1280x720.mp4';
+      try { var p = v.play(); if (p && p.catch) p.catch(function(e){ if (e && e.name === 'NotAllowedError') ready(); }); } catch (x) { ready(); }
+    })();
+    </script>
   </div>
 </section>
 
@@ -938,7 +1110,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   </div>
 </section>
 
-<section class="section tone-dark terr" id="territory" aria-labelledby="terr-title">
+<section class="section tone-dark terr edge-forest" id="territory" aria-labelledby="terr-title">
   <img class="decor decor--cone" src="decor/cone-top.webp" width="400" height="431" alt="" aria-hidden="true" loading="lazy" decoding="async">
   <div class="wrap">
     <div class="split" data-rv>
@@ -979,6 +1151,29 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   </div>
 </section>
 
+<section class="section winter edge-hills" id="winter" aria-labelledby="winter-title">
+  <svg class="flake" style="left:7%;top:calc(var(--edge,0px) + 4px);--s:13px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#d-flake"/></svg><svg class="flake" style="left:24%;top:calc(var(--edge,0px) + 34px);--s:10px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#d-flake"/></svg><svg class="flake" style="left:41%;top:calc(var(--edge,0px) + 8px);--s:15px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#d-flake"/></svg><svg class="flake" style="left:58%;top:calc(var(--edge,0px) + 30px);--s:11px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#d-flake"/></svg><svg class="flake" style="left:74%;top:calc(var(--edge,0px) + 6px);--s:14px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#d-flake"/></svg><svg class="flake" style="left:91%;top:calc(var(--edge,0px) + 28px);--s:12px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#d-flake"/></svg><svg class="grove" viewBox="0 0 1440 112" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"><g class="grove__sh"><ellipse cx="158" cy="103.5" rx="13.2" ry="2.2"/><ellipse cx="200" cy="107.5" rx="17.6" ry="2.2"/><ellipse cx="231" cy="102.5" rx="12.0" ry="2.2"/><ellipse cx="268" cy="99.5" rx="9.2" ry="2.2"/><ellipse cx="673" cy="102.5" rx="12.0" ry="2.2"/><ellipse cx="714" cy="108.5" rx="18.8" ry="2.2"/><ellipse cx="753" cy="105.5" rx="14.4" ry="2.2"/><ellipse cx="785" cy="101.5" rx="10.8" ry="2.2"/><ellipse cx="820" cy="98.5" rx="8.0" ry="2.2"/><ellipse cx="1222" cy="104.5" rx="14.0" ry="2.2"/><ellipse cx="1264" cy="101.5" rx="10.4" ry="2.2"/><ellipse cx="1300" cy="106.5" rx="16.0" ry="2.2"/></g><path class="grove__b" d="M135 36l0 4q1 1 1 4q0 0-1-1l0 1q1 1 2 6q-1 0-1-2l-1 0q1 1 2 6q0-1-1-2l-1 1q1 0 2 5q0 0-1-2l0 1q0 1 2 4q-1 0-2 0l-1 0q2 1 3 6q0 0-1-1l-1 0l-2 0l-2-1q-1 1-2 1q2-4 3-4q-1 0-2 1q1-5 3-6q-1 0-1 0q1-3 1-5q-1 1-1 2q1-4 2-6l-1 1q0 1-1 1q1-5 1-6q0 1-1 1q1-5 2-6zM167 28l0 4q1 1 1 4q0-1-1-1l0 1q1 0 1 5q0 0-1-1q1 1 1 4q0-1 0-1l-1 1q2 0 3 3q-1 0-1-1l-2 2q1 1 2 5q0 0-1-1l-1 0q2 0 4 3q-1 0-2-1l-2 1q1 2 2 5q0-1-1-1q2 1 4 6q-1-1-3-1l-1-1q3 1 5 5q-2 0-3-1l-2 1l-2 0l-1-1q-2 1-3 2q2-5 4-6l-1 0q-2 1-3 1q2-4 4-5l-2 0q-1 0-2 1q2-4 3-5q-1 1-1 2q1-5 2-5l-1 0q0 1-1 1q1-4 2-5l-1-1q0 2-1 3q1-5 2-7l0 1q0 1-1 1q1-4 1-5l0-1q0 1-1 1q1-4 2-4l-1 0q0 1-1 1q1-3 2-5zM201 37l0 4q0 1 1 6q0-1-1-2q0 2 1 5q0 0-1-1l0 1q1 1 2 8q0-1-1-3l-1 1q1 1 3 6q-1-1-2-2l-1 1q1 0 3 6q-1 0-2-2l-1 0l-1 0l-2 0q-1 2-2 2q2-5 3-7l0-1q-1 2-2 2q2-4 3-5l-1-1q-1 1-1 1q1-4 2-6l0-1q-1 1-1 1q1-3 1-4l0-1q-1 1-1 1q1-4 1-6zM639 35l0 4q1 1 1 6q0-1 0-2l-1 0q1 1 1 5q0 0 0-1l-1 1q1 2 2 4q-1 0-1-1l0 2q1 0 1 4q0-1-1-1l0 2q1 1 2 5q0 0-1-1l-1 0q1 1 3 5q-1 0-2-1l-1 1l-2 0l-1-1q-1 0-2 1q2-4 3-5l0 1q-1 0-2 1q2-5 3-7l-1 0q-1 2-1 2q1-5 2-7l-1-1q0 1 0 2q0-3 1-5l-1-1q0 0 0 1q0-4 1-4l0-1q-1 2-1 2q0-5 1-6zM673 27l0 4q0 1 1 6q0 0-1-1q1 1 1 5q0-1-1-1l0 1q1 1 2 6q-1-1-1-1l0-1q0 1 2 6q-1 0-2 0l-1-1q1 1 2 6q-1 0-2-1l0-1q2 2 4 7q-1 0-2-1l-1-1q1 1 3 5q-1 0-2-1l-1 1q1 1 3 4q-1-1-3-1l-1 2l-1 0l-3-1q-1 1-2 1q2-4 4-5l-1-1q-1 0-2 1q2-4 4-5l-1-1q-2 2-2 2q2-4 3-5l-1-2q0 1-1 1q1-3 2-4l-1 0q-1 1-2 1q2-4 3-6l0-1q-1 1-1 1q1-3 1-4q-1 1-1 1q0-5 1-6q-1 1-1 1q1-4 1-5zM706 36l0 3q1 2 1 7q0 0 0-2l-1 0q1 2 1 4q0 0 0-1l-1 1q1 1 2 5q-1 0-1-1l-1 0q2 1 3 5q-1 0-2 0q1 1 2 4q-1 0-1-1l-1 1q2 2 3 5q-1 0-2-1l-1 1l-2 0l-1-1q-2 2-2 2q1-4 3-5l0-2q-2 2-2 2q1-3 2-4l0-2q-1 2-2 2q1-4 3-6l-1 1q-1 0-1 1q1-5 1-6l0-1q0 1-1 2q1-4 2-6l-1 0q0 0-1 1q1-3 1-4zM1203 36l0 4q1 1 2 6q-1-1-1-2q0 2 1 7q-1-1-1-1l0 1q1 1 2 4q0 0-1-2l-1 3q0 1 1 6q0-1-1-2l0 1q2 1 4 6q0-1-2-2l-2 1l-2 0l-1 1q0 2-1 2q1-7 3-8l-1 0q0 2-1 2q1-7 2-7l-1-1q-1 3-1 3q1-7 2-7l-1-2q0 1 0 1q0-4 1-5l0 2q-1 1-1 1q0-7 1-8zM1238 30l0 5q1 0 2 6q-1-1-1-1l0-1q1 1 1 5q0 0-1-2l0 1q1 2 1 7q0 0-1-2q1 2 2 8q0-1-1-2l-1-1q2 1 4 7q-1 0-3-1l-1-1q1 2 2 7q-1-1-1-3l0 1q1 1 3 7q-1 0-2-1l-2-1l-2 0l-2-1q-1 1-2 1q2-4 4-5l0-1q-1 1-1 1q0-4 2-5l-2-1q-1 0-3 1q3-4 4-5l-1 0q-1 1-2 1q2-5 3-6l0-1q-1 2-1 2q1-4 2-5l0-1q-1 0-1 1q1-3 1-5l0-1q-1 2-1 2q0-5 1-6z"/><path class="grove__f" d="M152 38l1 6q0 1 1 7q0 0-1-2q1 1 1 3q0 0 0 0l-1 1q1 1 2 6q-1 0-1-1l-1-1q1 2 3 6q-1 0-2-1q1 1 3 5q-1 0-2-2l-2 1q2 2 4 5q-1 0-2-1l-2 1q3 1 5 6q-1-1-3-3l-2 1q3 2 5 6q-2 0-3-1l-1-1q4 2 7 7q-2 0-4-2l-2 0q2 1 6 6q-2-1-5-1l-1-1q2 2 6 5q-2-1-5-1l-2 1q5 2 9 4q-2 0-6 0l-3 0q3 2 6 6q-2 0-3-2l-3 3l-3 0l-4-2q-1 2-4 2q5-5 7-6l-1 0q-4 1-5 2q3-6 6-6l-2-1q-3 2-5 2q4-5 7-6l-1 0q-3 1-4 1q3-4 6-6l-2 0q-2 2-4 2q3-5 5-6l-1-1q-3 3-4 3q3-6 6-6l-1-1q-2 1-3 1q2-5 4-5l-1-1q-1 0-2 1q2-3 4-5l-1 0q0 0-1 1q1-3 2-5l-1-1q-1 1-2 2q2-4 3-6l-1 0q-1 0-2 0q2-3 3-4l-1 1q0 1 0 1q0-6 1-6l0-1q-1 0-1 1q0-4 1-5zM193 20l0 8q1 1 1 6q0-1 0-1l-1 0q1 1 2 5q-1-1-1-1q1 2 2 4q-1 0-1 0l-1 1q1 1 2 7q0-1-1-2l-1 0q1 1 2 7q0-1-1-2l-1 0q2 1 4 7q-1-1-3-2l-1 0q1 1 2 4q0 0-1 0l0 1q2 0 5 5q-1 0-3-1l-3 1q4 1 6 5q-2-1-3-2l-2 2q2 1 4 4q-1 0-4-1l-1 1q3 1 6 5q-1 0-3-1l-2 1q4 1 7 6q-2-1-5-2l-2 0q2 2 5 8q-2-1-3-1l-2-1q3 0 6 7q-3-1-5-3l-2 0q3 2 6 7q-2 0-3-2l-3 0q4 2 8 7q-1 0-3-2l-4 3l-4 0l-3-3q-3 1-6 2q4-5 9-6l-2-2q-4 0-6 1q3-3 8-5l-3 0q-3 1-6 2q4-5 9-6l-2-1q-2 2-4 2q3-5 6-6l-2-1q-1 1-2 2q2-4 4-6l-1-1q-2 1-4 1q4-3 5-5q-2 2-2 2q1-5 3-6l-2-2q-3 1-5 1q3-4 6-5l-1 2q-1 0-3 1q2-6 4-7l-1-1q0 1-2 2q2-5 4-6l-1-1q-1 0-2 1q1-4 3-5l-1-1q0 0-1 1q1-4 2-5l0 1q-1 0-2 1q1-5 2-7l0-1q-1 0-1 1q1-4 2-5l-1-1q0 1-1 1q1-3 1-5q0 0 0 0q0-2 1-5zM226 43l1 5q0 2 1 7q0 0-1-2q1 2 1 5q0 0-1-2l0 2q0 1 1 6q0 0-1-2q1 1 1 6q0 0-1-2q2 1 3 7q-1-1-2-2l0-1q2 2 3 5q-1 0-2-1l-2 1q3 1 5 6q-2-1-2-2l-2 1q2 0 5 5q-2 0-4-1l-2 0q4 1 7 5q-2 0-3-1l-3 0q4 1 7 5q-2-1-5-2l-3 2q4 1 6 5q-1 0-4-2l0 1q4 1 7 4q-3 0-6 0l-2 2l-3 0l-4-2q-2 2-4 2q5-5 8-6l-2 0q-2 0-3 0q2-3 5-5l-1 0q-2 0-4 1q2-4 5-4l-1 0q-1 0-3 1q2-5 4-6l-2 0q-2 1-3 1q3-5 4-6q-1 1-2 1q2-4 4-5l-2-1q-1 1-2 1q2-3 3-4l-1 1q-1 1-2 1q2-6 3-7l0-1q-1 1-1 1q1-4 2-5l0 1q-1 0-2 1q1-4 2-5l0-2q-1 2-1 2q0-4 1-5q-1 1-1 2q1-5 1-6zM264 54l0 5q1 1 1 5q0-1 0-2l-1 2q1 2 2 5q-1 0-1-1l-1 1q1 2 3 5q-1-1-2-2l0 2q1 2 3 5q-1 0-2-1l-1 1q2 1 3 5q0 0-2-1l-1 1q2 1 4 6q-1 0-3-1l-1 1q2 0 3 6q-1 0-2-2l-1 0q3 2 6 4q-1 0-3-1l-3 3l-2 0l-2-2q-2 1-4 2q3-5 5-6l0-1q-2 1-3 2q2-5 3-6l-1 0q-2 1-3 1q2-4 5-6l0-1q-2 0-2 1q1-4 2-5l0-2q0 1-1 2q1-4 2-5l-2-1q0 2-1 3q1-5 3-7l-1 0q0 2-1 3q1-7 2-8l-1-1q0-1 0 0q0-3 1-4zM668 43l1 6q0 1 1 4q-1 0-1-1l0 1q1 0 2 5q-1 0-2-1l0 1q1 0 2 4q-1 0-1-1l-1 1q1 1 3 4q-1 0-2-1l-1 1q2 1 3 5q-1 0-2-1l-1 1q1 1 3 5q-1 0-2-1l-1 0q4 1 6 6q-1 0-3-1l-2-1q2 1 6 6q-2 0-4-2l-2 1q4 1 7 4q-1 0-5-1l-2 1q2 1 5 7q-2-1-3-1l-2-1q3 1 6 5q-2-1-3-2l-2 1q3 1 7 6q-1 0-5-3l-4 3l-2 0l-4-2q-3 2-6 2q6-5 10-6l-3-1q-2 1-4 1q4-4 6-5l-2 1q-1 0-3 0q3-4 6-5l-3 1q-2 1-4 1q4-6 6-6l-1-1q-2 1-3 2q2-5 5-6l-2-1q-2 1-3 1q2-2 5-4l-1 0q-1 2-2 2q1-5 4-7l-3 0q0 2-1 2q2-4 3-6l0-1q-1 2-2 2q1-4 2-5q-1 1-2 2q1-5 2-7l0 1q0 1-1 1q1-5 2-6l0-2q-1 1-1 2q1-4 1-4zM707 15l0 8q1 1 1 8q0 0-1-3q1 2 2 5q-1-1-1-1l-1 2q1 1 2 7q-1 0-1-1l0-1q1 1 3 4q-1 0-2-1l-2 2q3 1 4 4q0 0-1-1l-3 3q2 0 3 5q-1 0-2-1q2 1 5 5q-2 0-4-1l-1 1q4 1 7 7q-2-1-5-2l-2 1q3 1 6 6q-2 0-4-1l-2 0q3 0 5 7q-2-1-3-2l-1 0q4 1 8 4q-3 0-6 0l-2 1q1 1 5 5q-2-1-3-2l-1 2q4 2 9 6q-3-1-7-1l-4 1q7 0 11 5q-3-1-5-2l-6 2q3 1 6 4q-2 0-3-1l-1 2q2 1 7 8q-2-1-4-2l-4 2l-4 0l-6-5q-4 0-6 1q4-3 11-5l-4 0q-2 1-5 1q5-5 9-5l-2-1q-4 0-5 1q4-4 8-6l-4 1q-1 1-4 1q4-5 8-7l-2-1q-4 1-6 1q3-4 8-5l-3 0q-4 1-5 1q3-5 7-6l-3 0q-1 1-3 1q3-5 7-6l-1-1q-1 2-3 2q3-5 4-6l-1 0q-2 1-3 2q2-6 5-8l-2 0q-3 2-4 2q3-6 6-7l-2 0q-1 0-3 1q3-5 5-6l-1-1q-1 1-2 1q2-3 3-5l0-2q-1 1-1 1q1-3 1-4l0-1q-2 1-2 1q1-4 2-6l0 1q-1 0-1 1q1-5 2-7l-1-1q0 2-1 2q1-4 2-5zM747 34l0 7q1 0 2 8q-1 0-1-2l-1-1q1 1 2 7q0-1-1-2q1 2 2 5q0 0-2-1l0 2q2 0 4 4q-1 0-2-1l-2 1q2 2 4 7q-1-1-2-2l-1 2q3 0 5 5q-2-1-3-1l-3 0q2 2 3 5q-1 0-2-1l0 1q3 2 6 6q-2 0-4-1l-3 1q5 0 8 5q-3 0-5-2l-3 2q3 1 4 6q-1-1-2-1q3 1 6 7q-2 0-3-2l-3 1q2 1 6 6q-2 0-5-1l-2 2l-3 0l-4-2q-3 1-5 2q5-5 7-8l-1 0q-3 0-5 0q3-4 7-5l-2 1q-3 2-5 2q4-6 7-8l-1 0q-3 0-5 1q3-5 7-6l-1 0q-2 2-3 3q2-7 4-9l-3 1q-1 2-2 2q2-6 5-7l-2-1q-1 1-3 1q3-4 5-6l0-1q-2 3-3 3q2-6 4-7l-2 1q-1 1-2 1q2-7 3-8l0-2q-1 1-2 2q1-4 2-5q0 3-1 3q1-7 2-8l-1-1q0 0 0 1q0-4 1-6zM781 48l0 5q1 1 1 7q0 0-1-1l0-1q1 0 2 7q-1 0-2-1l0-2q1 2 2 7q0-1-1-1l-1 0q1 1 3 5q-1-1-2-1l-1 0q1 1 2 6q-1 0-1-1l-1 0q1 0 3 5q-1-1-2-1l0 1q2 1 4 7q-2 0-2-2l-2 0q2 0 4 4q-1-1-3-1l-1 2q2 0 4 3q-2 0-3 0l-1 2q3 0 5 4q-2-1-3-1l-2 2l-2 0l-3-1q-3 0-5 1q3-6 7-6l-2-1q-2 1-3 1q2-4 6-5l-3 0q-2 1-3 1q3-4 6-6l0-1q-1 1-2 1q1-3 2-4l-2 0q-1 2-2 2q2-6 4-6l-2-1q-1 1-2 1q2-4 4-5l0-2q-1 1-2 2q1-4 2-6l0-1q-1 2-1 2q1-5 1-5l0-1q-1 2-1 2q1-4 1-6l0-1q-1 2-1 2q1-5 1-6zM817 59l0 5q1 1 1 5q0 0 0-1l-1 1q1 0 2 5q-1 0-1-1l-1 0q1 1 2 5q0-1-1-2l-1 3q2 0 3 7q-1-1-1-2l-1-1q1 2 2 5q0-1-1-1l-1 2q2 1 4 5q-1-1-3 0l-1 0q2 1 4 4q-1 0-3-1l-1 2l-2 0l-1-2q-2 1-4 2q3-5 5-6l-2 0q-1 1-2 1q2-4 4-5l-1-1q-1 2-2 2q2-5 3-7l-1-1q0 2-1 2q1-4 2-5l0-2q-1 1-1 2q1-5 1-5l0-1q0 2-1 3q1-7 2-8l-1-1q0 2 0 2q0-5 1-6zM1217 35l0 6q1 2 1 5q0-1 0-1l-1 0q0 1 1 6q0 0 0-2l-1 0q1 2 2 6q0 0-1-1l-1 0q2 0 3 5q-1 0-2-2l-1 1q2 0 4 4q-1 0-2-1l-2 1q2 0 3 4q0 0-1-1l-1 1q2 1 4 3q-1 0-2 0l-3 1q2 1 4 5q-1-1-2-2l-1 1q2 2 5 4q-1-1-2-1l-3 1q3 1 6 4q-2 0-4 0l-2 0q4 1 6 6q-1 0-4-1l-2-1q3 2 7 6q-2-1-3-2l-4 1q1 0 3 5q-1 0-2-1l0-1q3 2 7 6q-3 0-5-1l-2-1q3 2 8 4q-2 0-6 0l-3 3l-3 0l-2-2q-3 1-5 2q4-5 7-7l-2 1q-2 0-3 1q3-5 5-6l-2 0q-2 2-4 2q3-5 6-6l-3 0q-2 0-4 1q4-4 6-4l-1-1q-1 0-3 0q3-3 6-3l-3 0q-2 1-3 1q2-5 5-5l0-2q-2 1-3 2q1-4 4-4l-2-1q-1 1-2 1q2-4 4-5l-1 0q-1 1-2 1q1-5 3-5l-2 0q-1 0-2 1q2-5 3-5l0-1q-2 2-2 2q2-5 3-5l0-2q-1 1-1 2q0-3 1-4l0-1q-1 0-1 1q0-3 1-4l0-1q-1 1-1 1q1-4 2-5l-1 0q0 1-1 1q1-3 1-5zM1260 50l0 6q0 0 1 5q0 0-1-1q1 2 2 8q-1-1-1-2l-1 0q2 0 3 5q-1 0-2-2l0 2q2 1 3 6q-1-1-2-2l-1 0q1 1 4 7q-2-1-3-1l-1 0q2 1 4 7q-1 0-3-1l-2-1q4 1 6 5q-2-1-4-1l-1 1q1 1 3 5q-1 0-2-1l0 1q4 1 7 7q-3-1-5-3l-3 2l-2 0l-4-1q-2 0-5 1q3-5 7-7l-1 2q-1 1-2 1q2-6 4-7l-1-1q-1 1-3 1q3-5 4-5l0-1q-1 1-1 2q1-5 2-7l-2-1q-2 1-3 1q2-3 4-4l-1-1q-1 1-2 1q2-4 3-5l0-2q-1 1-1 2q1-4 2-6q-1 1-2 1q1-4 2-6q0 2-1 2q1-6 1-7zM1293 27l1 7q0 1 1 4q-1 0-1-1l0 2q0 0 1 4q0 0-1-1l0 1q1 1 2 6q-1 0-1-1l-1 0q1 0 2 4q-1 0-1-1l-1 1q2 0 4 4q-1-1-3-1l-1 1q3 2 4 6q-1-1-2-2l-2 0q4 1 6 4q-1 0-3-1l-3 2q4 1 7 6q-2 0-4-1l-3-1q4 2 7 5q-2-1-4-1l-2 1q4 1 7 5q-2-1-3-1l-4 0q3 1 6 6q-1 0-4-2l-2 1q4 1 8 4q-3 0-6-1l-2 1q3 1 8 4q-2-1-5-1l-3 1q3 1 8 6q-1 0-4-2l-4 0q3 1 7 7q-2 0-4-2l-3 0q4 1 7 4q-1-1-5-1l-2 4l-3 0l-2-3q-3 1-5 2q3-4 7-6l-1 0q-2 0-3 1q1-4 4-6l-2 1q-2 0-3 0q2-4 5-4l-4-1q-3 1-5 1q5-4 8-6l-2-1q-3 1-5 1q3-3 7-3l-1 0q-5 0-6 0q3-3 7-5l-1 1q-1 0-3 1q2-5 4-6l0-1q-3 2-4 2q3-5 5-6l-2 0q-2 1-4 1q3-5 5-6l0 1q-1 2-2 2q2-6 3-7l-1 1q-1 1-2 1q2-5 3-6l-1 0q-1 1-2 1q2-5 3-5l-1-2q0 1-1 2q2-3 3-5l-1 0q-1 0-1 0q1-4 2-4l-1-2q0 1 0 1q0-2 1-4l0 1q-1 1-1 2q0-6 1-7z"/></svg>
+  <div class="wrap">
+    <div class="split" data-rv>
+      <div>
+        <p class="eyebrow">Зима і лижі</p>
+        <h2 id="winter-title">Зранку на схил, <em>увечері в тепло</em></h2>
+      </div>
+      <p class="lead">До витягу №1 Буковеля близько 2&nbsp;км. Узимку з лижами зручніше трансфером: господарі організують його туди й назад за доплату. Лижі й черевики після катання сушать і зберігають в окремій кімнаті, а в зимовий сезон на території працює кафе.</p>
+    </div>
+    <figure class="winter__ph" data-rv>
+      <div class="winter__img"><img src="img/bukovel-slopes.webp" width="1800" height="857" alt="Схили Буковеля взимку: траси на горі, лижники біля підніжжя, крісельний витяг серед смерек" loading="lazy" decoding="async"></div>
+      <figcaption>Схили Буковеля взимку. Фото: <a href="https://commons.wikimedia.org/wiki/File:Bukovel_track_2_-_panoramio.jpg" target="_blank" rel="noopener">Michael Karavanov, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.uk" target="_blank" rel="noopener">CC BY-SA 3.0</a>, фрагмент панорами</figcaption>
+    </figure>
+    <ul class="winter__facts" data-rv>
+      <li><svg class="i" aria-hidden="true"><use href="#i-lift"/></svg><b>≈2&nbsp;км</b><span>до витягу №1 Буковеля</span></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-car"/></svg><b>Трансфер</b><span>до витягів і назад, за доплату</span></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-ski"/></svg><b>Кімната для лиж</b><span>сушать і зберігають лижі й черевики</span></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-coffee"/></svg><b>Кафе взимку</b><span>працює просто на території</span></li>
+    </ul>
+  </div>
+</section>
+
 <section class="section tone-sand gallery" id="gallery" aria-labelledby="gal-title">
   <div class="wrap">
     <div class="head" data-rv>
@@ -1007,6 +1202,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 </section>
 
 <section class="section place" id="place" aria-labelledby="place-title">
+  <div class="lift" aria-hidden="true"><svg class="lift__cable" viewBox="0 0 1000 128" preserveAspectRatio="none" focusable="false"><path d="M0 70Q500 96 1000 10"/></svg><svg class="lift__chair" style="--x:66%;--y:55.5" viewBox="0 0 44 60" focusable="false"><use href="#d-chair"/></svg><svg class="lift__chair" style="--x:87%;--y:30.5" viewBox="0 0 44 60" focusable="false"><use href="#d-chair"/></svg></div>
   <div class="wrap">
     <figure class="lp" data-rv>
       <div class="lp__stage">
@@ -1152,9 +1348,13 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         <p><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><span>вул. Стаїще, 138, Поляниця</span></p>
         <p><svg class="i" aria-hidden="true"><use href="#i-car"/></svg><span>Трансфер до витягу №1 за доплату</span></p>
       </div>
-      <div class="still" aria-hidden="true">
+      <div class="still flakes-dark" aria-hidden="true">
+        <svg class="skis" viewBox="0 0 140 422" aria-hidden="true" focusable="false"><defs><linearGradient id="skiW" x1="0" x2="1"><stop offset="0" stop-color="#8E5A2C"/><stop offset=".35" stop-color="#C88B4F"/><stop offset=".7" stop-color="#B57A41"/><stop offset="1" stop-color="#7B4B22"/></linearGradient></defs><g><path d="M30.0 52.0L101.6 406.2" stroke="#BE9A62" stroke-width="3.4" stroke-linecap="round"/><path d="M43.6 119.4L44.1 121.8" stroke="#7E5C2E" stroke-width="3.8"/><path d="M52.8 164.5L53.2 166.9" stroke="#7E5C2E" stroke-width="3.8"/><path d="M61.9 209.6L62.3 212.0" stroke="#7E5C2E" stroke-width="3.8"/><path d="M71.0 254.7L71.5 257.1" stroke="#7E5C2E" stroke-width="3.8"/><path d="M80.1 299.8L80.6 302.1" stroke="#7E5C2E" stroke-width="3.8"/><path d="M89.2 344.9L89.7 347.2" stroke="#7E5C2E" stroke-width="3.8"/><path d="M30.0 52.0L35.9 81.4" stroke="#4A2C17" stroke-width="5" stroke-linecap="round"/><path d="M30.8 55.9c-9 6-11 26-3 34s9-19 3-34" fill="none" stroke="#5E3B1E" stroke-width="1.6"/><ellipse cx="97.3" cy="384.7" rx="11.5" ry="3.6" fill="none" stroke="#3E2A1A" stroke-width="1.7"/><path d="M97.3 384.7L108.8 384.7" stroke="#3E2A1A" stroke-width=".9"/><path d="M97.3 384.7L103.0 387.8" stroke="#3E2A1A" stroke-width=".9"/><path d="M97.3 384.7L91.5 387.8" stroke="#3E2A1A" stroke-width=".9"/><path d="M97.3 384.7L85.8 384.7" stroke="#3E2A1A" stroke-width=".9"/><path d="M97.3 384.7L91.5 381.6" stroke="#3E2A1A" stroke-width=".9"/><path d="M97.3 384.7L103.0 381.6" stroke="#3E2A1A" stroke-width=".9"/><path d="M101.6 406.2L104.0 418.0" stroke="#6B6A66" stroke-width="2.2" stroke-linecap="round"/></g><g><path d="M52 8C61.0 14 61.0 30 60.6 42L59.5 400Q59.5 418 52 420Q44.5 418 44.5 400L43.4 42C43.0 30 43.0 14 52 8Z" fill="url(#skiW)" stroke="#5A3618" stroke-width="1"/><path d="M47.8 52Q48.4 105 47.5 142Q47.7 172 48.0 202Q46.8 237 47.2 273Q47.6 310 48.1 347Q47.7 367 48.1 387Q48.9 411 48.3 394M50.7 49Q50.8 89 51.2 109Q50.0 137 50.6 164Q50.0 185 50.6 205Q50.1 235 50.4 265Q50.6 290 50.4 314Q51.5 334 50.8 355Q49.9 388 51.3 394M54.1 74Q53.7 90 54.4 113Q55.1 147 54.0 181Q54.5 218 53.9 254Q55.0 286 54.5 318Q54.3 348 53.5 378Q54.8 403 54.0 394M56.8 53Q57.3 99 57.0 130Q56.7 157 56.8 185Q56.9 221 56.7 256Q55.7 286 56.3 316Q58.0 350 56.9 384Q56.0 412 56.8 394" fill="none" stroke="#6E431D" stroke-opacity=".42" stroke-width=".8"/><path d="M45.2 48L45.8 394" stroke="#F3D5A6" stroke-opacity=".3" stroke-width="1.1"/><path d="M52 8C61.0 14 61.0 22 60.800000000000004 27Q52 23 43.199999999999996 27C43.0 22 43.0 14 52 8Z" fill="#6E431D" fill-opacity=".35"/><path d="M46.5 25Q52 20.5 57.5 25" fill="none" stroke="#F6DDB4" stroke-opacity=".55" stroke-width="1.1"/><rect x="44.8" y="238.72000000000003" width="14.4" height="13" rx="2" fill="#5F5D58"/><rect x="44.8" y="238.72000000000003" width="14.4" height="3" rx="1.2" fill="#8A877F"/><rect x="41.5" y="253.22000000000003" width="21" height="6.5" rx="2.2" fill="#4A2C17"/><rect x="58" y="254.32000000000002" width="4" height="4.3" rx=".8" fill="none" stroke="#B9A57C" stroke-width="1"/><path d="M45.4 260.72V302.72M58.6 260.72V302.72" stroke="#55534E" stroke-width="1.3" fill="none"/><rect x="44.6" y="298.72" width="14.8" height="7" rx="2" fill="#5F5D58"/></g><g><path d="M76 20C85.0 26 85.0 42 84.6 54L83.5 400Q83.5 418 76 420Q68.5 418 68.5 400L67.4 54C67.0 42 67.0 26 76 20Z" fill="url(#skiW)" stroke="#5A3618" stroke-width="1"/><path d="M71.8 89Q70.7 119 71.3 158Q72.4 195 72.0 231Q72.1 257 71.9 284Q71.0 315 71.7 347Q72.3 375 72.4 394M74.7 88Q74.6 111 74.4 142Q73.6 162 74.7 183Q74.4 210 75.2 236Q74.8 266 74.4 297Q74.3 317 74.3 338Q75.9 368 74.9 394M78.1 65Q78.8 118 78.4 156Q78.7 194 78.4 232Q79.3 259 78.7 286Q78.7 309 78.4 333Q78.2 362 78.1 391M80.8 88Q81.6 110 80.6 140Q81.8 178 80.8 215Q81.8 247 81.1 278Q80.1 308 80.6 338Q80.0 372 81.3 394" fill="none" stroke="#6E431D" stroke-opacity=".42" stroke-width=".8"/><path d="M69.2 60L69.8 394" stroke="#F3D5A6" stroke-opacity=".3" stroke-width="1.1"/><path d="M76 20C85.0 26 85.0 34 84.8 39Q76 35 67.2 39C67.0 34 67.0 26 76 20Z" fill="#6E431D" fill-opacity=".35"/><path d="M70.5 37Q76 32.5 81.5 37" fill="none" stroke="#F6DDB4" stroke-opacity=".55" stroke-width="1.1"/><rect x="68.8" y="244.00000000000003" width="14.4" height="13" rx="2" fill="#5F5D58"/><rect x="68.8" y="244.00000000000003" width="14.4" height="3" rx="1.2" fill="#8A877F"/><rect x="65.5" y="258.5" width="21" height="6.5" rx="2.2" fill="#4A2C17"/><rect x="82" y="259.6" width="4" height="4.3" rx=".8" fill="none" stroke="#B9A57C" stroke-width="1"/><path d="M69.4 266.0V308.0M82.6 266.0V308.0" stroke="#55534E" stroke-width="1.3" fill="none"/><rect x="68.6" y="304.0" width="14.8" height="7" rx="2" fill="#5F5D58"/></g><g><path d="M112.0 60.0L38.5 406.3" stroke="#BE9A62" stroke-width="3.4" stroke-linecap="round"/><path d="M97.7 127.3L97.2 129.6" stroke="#7E5C2E" stroke-width="3.8"/><path d="M88.2 172.3L87.7 174.6" stroke="#7E5C2E" stroke-width="3.8"/><path d="M78.6 217.3L78.1 219.6" stroke="#7E5C2E" stroke-width="3.8"/><path d="M69.1 262.3L68.6 264.6" stroke="#7E5C2E" stroke-width="3.8"/><path d="M59.5 307.3L59.0 309.6" stroke="#7E5C2E" stroke-width="3.8"/><path d="M50.0 352.3L49.5 354.6" stroke="#7E5C2E" stroke-width="3.8"/><path d="M112.0 60.0L105.8 89.3" stroke="#4A2C17" stroke-width="5" stroke-linecap="round"/><path d="M111.2 63.9c-9 6-11 26-3 34s9-19 3-34" fill="none" stroke="#5E3B1E" stroke-width="1.6"/><ellipse cx="43.1" cy="384.7" rx="11.5" ry="3.6" fill="none" stroke="#3E2A1A" stroke-width="1.7"/><path d="M43.1 384.7L54.6 384.7" stroke="#3E2A1A" stroke-width=".9"/><path d="M43.1 384.7L48.8 387.9" stroke="#3E2A1A" stroke-width=".9"/><path d="M43.1 384.7L37.3 387.9" stroke="#3E2A1A" stroke-width=".9"/><path d="M43.1 384.7L31.6 384.7" stroke="#3E2A1A" stroke-width=".9"/><path d="M43.1 384.7L37.3 381.6" stroke="#3E2A1A" stroke-width=".9"/><path d="M43.1 384.7L48.8 381.6" stroke="#3E2A1A" stroke-width=".9"/><path d="M38.5 406.3L36.0 418.0" stroke="#6B6A66" stroke-width="2.2" stroke-linecap="round"/></g></svg>
         <img class="c1" src="decor/cone-side.webp" width="400" height="182" alt="" loading="lazy" decoding="async">
         <img class="c2" src="decor/cone-angle.webp" width="400" height="224" alt="" loading="lazy" decoding="async">
+        <svg class="flake fl-1" viewBox="0 0 24 24" focusable="false"><use href="#d-flake"/></svg>
+        <svg class="flake fl-2" viewBox="0 0 24 24" focusable="false"><use href="#d-flake"/></svg>
+        <svg class="flake fl-3" viewBox="0 0 24 24" focusable="false"><use href="#d-flake"/></svg>
       </div>
     </div>
     <div class="formcard" data-rv>
@@ -1188,16 +1388,25 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
           <input type="hidden" name="checkin" id="fIn">
           <input type="hidden" name="checkout" id="fOut">
         </div>
-        <div class="row2">
+        <div class="row2 row2--keep">
           <div class="fld">
-            <span class="lbl" id="gLbl">Гостей</span>
+            <span class="lbl" id="adLbl">Дорослі</span>
             <div class="stepper">
-              <button type="button" data-step="-1" aria-label="Менше гостей">−</button>
-              <input type="number" name="guests" id="fGuests" value="2" min="1" max="17" inputmode="numeric" aria-labelledby="gLbl">
-              <button type="button" data-step="1" aria-label="Більше гостей">+</button>
+              <button type="button" data-step="-1" data-for="fAdults" aria-label="Менше дорослих">−</button>
+              <input type="number" name="adults" id="fAdults" value="2" min="1" max="8" inputmode="numeric" aria-labelledby="adLbl">
+              <button type="button" data-step="1" data-for="fAdults" aria-label="Більше дорослих">+</button>
+            </div>
+          </div>
+          <div class="fld">
+            <span class="lbl" id="kidsLbl">Діти</span>
+            <div class="stepper">
+              <button type="button" data-step="-1" data-for="fKids" aria-label="Менше дітей">−</button>
+              <input type="number" name="kids" id="fKids" value="0" min="0" max="6" inputmode="numeric" aria-labelledby="kidsLbl">
+              <button type="button" data-step="1" data-for="fKids" aria-label="Більше дітей">+</button>
             </div>
           </div>
         </div>
+        <label class="fld" id="fAgesFld" hidden><span class="lbl">Вік дітей <small class="lbl__opt">необов’язково</small></span><input class="inp" type="text" name="kids_age" id="fAges" placeholder="Наприклад: 5, 8" autocomplete="off" maxlength="40"></label>
         <label class="check"><input type="checkbox" name="transfer" id="fTransfer"><span>Потрібен трансфер до витягу<small>Трансфер за доплату, господарі скажуть ціну й час.</small></span></label>
         <label class="check"><input type="checkbox" name="sauna" id="fSauna"><span>Хочемо сауну на один із вечорів<small>Господарі скажуть вільний час і ціну.</small></span></label>
         <label class="fld"><span class="lbl">Ім’я</span><input class="inp" type="text" name="name" id="fName" autocomplete="name" required placeholder="Як до вас звертатися"></label>
@@ -1232,7 +1441,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
   </div>
 </section>
 
-<section class="section faq-sec" id="faq" aria-labelledby="faq-title">
+<section class="section faq-sec edge-hills" id="faq" aria-labelledby="faq-title" style="--edge-x:-520px">
   <div class="wrap faq__grid">
     <div class="head" data-rv>
       <p class="eyebrow">Питання</p>
@@ -1293,7 +1502,11 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 <div class="lizhnyk" aria-hidden="true"></div>
 <footer class="foot">
   <div class="wrap">
-    <p class="foot__brand">Горянка<span>Міні-готель · Поляниця, Буковель</span></p>
+    <div class="foot__top">
+      <p class="foot__brand">Горянка<span>Міні-готель · Поляниця, Буковель</span></p>
+      <!-- силует як з Поляниці на південь: Говерла (схід) ліворуч, Петрос (захід) праворуч -->
+      <svg class="foot__ridge" viewBox="0 -48 1000 258" aria-hidden="true" focusable="false"><path class="rf" d="M0 183l5 0l5 0l5 1l5-1l5-1l5-2l5-3l5-3l5-3l5-3l5-1l5 1l5 2l5-1l5 0l5-1l5 0l5-2l5-2l5-2l5-4l5-4l5-3l5 0l5-2l5 0l5 1l5 1l5 0l5 1l5 0l5 4l5 1l5 1l5 2l5 2l5 2l5-1l5 0l5-1l5-1l5 3l5 1l5 0l5-2l5 3l5 1l5 2l5 0l5 1l5 0l5 0l5 1l5-1l5 0l5 2l5 0l5 0l5 2l5 0l5 0l5-1l5 1l5 1l5 0l5-1l5-1l5-2l5-2l5-1l5 0l5-1l5-3l5 1l5-1l5-3l5 1l5-3l5-2l5 1l5-2l5-2l5-2l5-1l5 0l5-2l5-2l5-3l5-2l5-1l5-1l5 0l5-1l5-2l5 0l5 3l5 6l5 2l5 2l5 1l5-2l5 3l5 1l5 0l5 5l5 1l5 1l5 1l5 4l5-1l5-1l5 3l5 4l5 4l5 2l5 2l5 2l5 3l5-1l5 2l5 1l5-3l5 0l5-1l5 0l5 3l5 0l5 1l5 4l5-2l5 1l5 4l5-2l5 1l5 1l5 2l5-2l5-1l5 1l5 2l5 0l5-1l5-1l5 2l5-3l5-4l5-1l5 1l5 1l5 1l5 1l5-2l5-3l5 0l5-2l5-1l5 0l5-1l5-2l5-1l5 0l5-1l5 0l5 0l5-2l5-1l5-1l5-1l5 1l5-1l5-2l5-1l5-1l5 1l5 0l5-3l5-1l5 2l5 0l5 1l5 1l5-1l5 3l5 0l5-3l5 1l5 1l5 1l5 0l5 3l5 2l5 1l5 2l5 2l5 2l5 1l5 0l5 1l5 2l5 0"/><path class="rb" d="M0 179l4 1l4 1l4-1l4 0l4 2l4 0l4 2l4 0l4-1l4-1l4-1l4-2l4 0l4-1l4-2l4-2l4 0l4-1l4-1l4 1l4 1l4 0l4-1l4 0l4 0l4 1l4-1l4-2l4-1l4 0l4-1l4-1l4 0l4-2l4 0l4-1l4 0l4 1l4 0l4-3l4-3l4-2l4 0l4-2l4-2l4-1l4-1l4-2l4-2l4 0l4-2l4 4l4 0l4 0l4 2l4-2l4 0l4-2l4-2l4-2l4-2l4 0l4 1l4 0l4-1l4-1l4-1l4-2l4-3l4-2l4-2l4-1l4-2l4 1l4 3l4 1l4 0l4-1l4-1l4 3l4 0l4 1l4 0l4-1l4-2l4 0l4-2l4 2l4 1l4 2l4 1l4 3l4 2l4-2l4-1l4 3l4 0l4-1l4-1l4-2l4-1l4-3l4-1l4-2l4 0l4-3l4 0l4-2l4-1l4 0l4-1l4 2l4-2l4 0l4 2l4-1l4-2l4-1l4 2l4-2l4-3l4-1l4-2l4-5l4-3l4-5l4-2l4-2l4-2l4-4l4-4l4-2l4-4l4-3l4-2l4-1l4-3l4-2l4-2l4-5l4-7l4-3l4-2l4-1l4-2l4-2l4-1l4-2l4 0l4 6l4 2l4 1l4 5l4 5l4 2l4 2l4 2l4 4l4 5l4 2l4 0l4 3l4 4l4 2l4 2l4 1l4 2l4 2l4 3l4 4l4-1l4 3l4 3l4 0l4-2l4 3l4 0l4 1l4 2l4 2l4 0l4-2l4 1l4 1l4-5l4 0l4 1l4-4l4-4l4-2l4-2l4-2l4-3l4-5l4-2l4-1l4-2l4-4l4-7l4-8l4-9l4 5l4 10l4 4l4 4l4 6l4 5l4 6l4 4l4 5l4 3l4 1l4 0l4 2l4 2l4 4l4 2l4 4l4 4l4 4l4 1l4 0l4 0l4 1l4-2l4 1l4-2l4 0l4-4l4-2l4 0l4-2l4 1l4 1l4 2l4-1l4 0l4 0l4 1l4 4l4 3l4 1l4 0l4 2l4 2l4 2l4 1l4 2l4 2l4 2"/><path class="rc" d="M780 89l4-1l4-2l4-4l4-7l4-7l4-9l4 4l4 10l4 4l4 5l4 5l4 5"/><path class="rc" d="M552 74l4-2l4-5l4-6l4-4l4-2l4-1l4-2l4-2l4-1l4-2l4 1l4 5l4 2l4 1l4 5l4 5l4 2l4 2l4 3l4 3"/><path class="rl" d="M592 38v-14"/><text x="592" y="16" text-anchor="middle">Говерла</text><path class="rl" d="M804 49v-14"/><text x="804" y="27" text-anchor="middle">Петрос</text></svg>
+    </div>
     <div class="foot__grid">
       <div>
         <p class="foot__t">Адреса</p>
@@ -1322,7 +1535,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
     </div>
     <div class="foot__credits">
       <p>Настроєве відео на першому екрані зібране для прототипу.</p>
-      <p>Фото: садиба «Горянка». Зимова панорама в розділі «Як дістатися»: Федір Каліновський, Google Maps.</p>
+      <p>Фото: садиба «Горянка». Зимова панорама в розділі «Як дістатися»: Федір Каліновський, Google Maps. Схили Буковеля в розділі «Зима і лижі»: Michael Karavanov, Wikimedia Commons, CC BY-SA 3.0.</p>
       <p>Опис номерів і ціни: туристичний каталог yaremcha.com.ua, оновлення 20.04.2026. Рейтинг і цитати: Google Maps, станом на 30.09.2026.</p>
       <p>Уточнення господарів, 04.10.2026: площі номерів, балкони, стоянка, відстань до центру, трансфер зі станції Татарів, кафе й басейн.</p>
       <p>Прототип сайту, зібраний за відкритими даними. Це не офіційний сайт міні-готелю.</p>
@@ -1385,7 +1598,8 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 
   function ambient(v, pick, opts){
     opts = opts || {};
-    var near = false, cur = '', userPaused = false;
+    /* src могли підключити ще під час завантаження (скрипт одразу після відео), тоді не перезавантажуємо */
+    var near = false, cur = v.getAttribute('src') || '', userPaused = false;
     v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
     v.playsInline = true; v.setAttribute('playsinline', '');
     function load(){
@@ -1422,21 +1636,22 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
     var box = d.getElementById('band'), v = d.getElementById('bandVideo'), btn = d.getElementById('bandPause');
     /* висота першого екрана = вікно мінус смужка прототипу й шапка, щоб низ не обрізався */
     if (box) {
-      var fit = function(){ d.documentElement.style.setProperty('--hero-top', Math.round(box.getBoundingClientRect().top + window.pageYOffset) + 'px'); };
+      var fit = function(){ d.documentElement.style.setProperty('--hero-top', (box.getBoundingClientRect().top + window.pageYOffset) + 'px'); };
       fit(); window.addEventListener('resize', fit, { passive: true });
+      if (d.fonts && d.fonts.ready) d.fonts.ready.then(fit);
     }
     if (!v) return;
-    /* під відео справжнє фото садиби; підпис про настроєве відео показуємо лише тоді, коли відео справді грає */
-    var note = d.getElementById('bandNote');
-    if (calm) { v.parentNode.removeChild(v); return; }
+    /* відео підключає скрипт одразу після нього; якщо src немає (економія трафіку, «зменшити рух», mp4 не грає), прибираємо відео */
+    if (calm || !v.getAttribute('src')) { v.parentNode.removeChild(v); box.classList.add('is-ready'); return; }
     var mob = window.matchMedia('(max-width: 760px)');
     var ctl = ambient(v, function(){
       return { src: mob.matches ? 'hero-karpaty/hero_full_mobile_750x990.mp4' : 'hero-karpaty/hero_full_1280x720.mp4' };
     }, {
       mq: mob, watch: box, eager: true,
-      onPlaying: function(){ box.classList.add('is-playing'); btn.hidden = false; if (note) note.hidden = false; },
+      onPlaying: function(){ box.classList.add('is-playing', 'is-ready'); btn.hidden = false; },
       onSwap: function(){ box.classList.remove('is-playing'); }
     });
+    if (box.classList.contains('is-playing')) btn.hidden = false;
     btn.addEventListener('click', function(){
       var paused = btn.getAttribute('aria-pressed') === 'true';
       if (paused) { ctl.resume(); btn.setAttribute('aria-pressed', 'false'); btn.setAttribute('aria-label', 'Зупинити відео'); }
@@ -1520,7 +1735,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 
   (function form(){
     var f = d.getElementById('bookForm');
-    var fin = d.getElementById('fIn'), fout = d.getElementById('fOut'), g = d.getElementById('fGuests');
+    var fin = d.getElementById('fIn'), fout = d.getElementById('fOut');
     var transfer = d.getElementById('fTransfer'), sauna = d.getElementById('fSauna');
     var nm = d.getElementById('fName'), ph = d.getElementById('fPhone'), cm = d.getElementById('fComment');
     var err = d.getElementById('fErr'), done = d.getElementById('done'), bubble = d.getElementById('bubble');
@@ -1528,7 +1743,6 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
     var cal = d.getElementById('cal'), months = d.getElementById('calMonths'), sumEl = d.getElementById('calSum');
     var prevBtn = d.getElementById('calPrev'), nextBtn = d.getElementById('calNext'), resetBtn = d.getElementById('calReset');
     var radios = [].slice.call(f.querySelectorAll('input[name="room"]'));
-    var MAX_GUESTS = 17;
     submit.disabled = false;
 
     function pad(n){ return (n < 10 ? '0' : '') + n; }
@@ -1556,6 +1770,39 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
     };
     /* Мінімум ночей: правило господарів поки не відоме, тому 1. Логіка календаря вже вміє більше. */
     var MIN_NIGHTS = 1;
+
+    /* Гості: дорослі (1-8), діти (0-6) і вік дітей. Ті самі значення в рядку на першому екрані, у формі, під календарем і в тексті заявки. */
+    var MAX_AD = 8, MAX_KIDS = 6;
+    var fAd = d.getElementById('fAdults'), fKids = d.getElementById('fKids'), fAges = d.getElementById('fAges'), fAgesFld = d.getElementById('fAgesFld');
+    var party = { ad: 2, kids: 0, ages: '' }, partyHooks = [];
+    function clampInt(v, lo, hi, dflt){ v = parseInt(v, 10); if (isNaN(v)) v = dflt; return Math.max(lo, Math.min(hi, v)); }
+    function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function plural(n, one, few, many){ var a = n % 10, b = n % 100; if (a === 1 && b !== 11) return one; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return few; return many; }
+    function adTxt(n){ return n + ' ' + plural(n, 'дорослий', 'дорослих', 'дорослих'); }
+    function kidsTxt(n){ return n + ' ' + plural(n, 'дитина', 'дитини', 'дітей'); }
+    /* «5, 8» → «5 і 8 років»; якщо цифр немає, лишаємо, як написали */
+    function agesTxt(raw){
+      raw = String(raw || '').trim();
+      var a = raw.match(/\d+/g);
+      if (!a) return raw;
+      var last = +a[a.length - 1];
+      return (a.length > 1 ? a.slice(0, -1).join(', ') + ' і ' + last : String(last)) + ' ' + plural(last, 'рік', 'роки', 'років');
+    }
+    function kidsPart(){ var t = agesTxt(party.ages); return kidsTxt(party.kids) + (t ? ' (' + t + ')' : ''); }
+    function partyLine(){ return adTxt(party.ad) + (party.kids ? ', ' + kidsPart() : ''); }
+    /* рядок у заявці: «Дорослі: 2, діти: 1 (5 років)» */
+    function partyReq(){ var t = agesTxt(party.ages); return 'Дорослі: ' + party.ad + ', ' + (party.kids ? 'діти: ' + party.kids + (t ? ' (' + t + ')' : '') : 'без дітей'); }
+    function setParty(ad, kids, ages, src){
+      party.ad = clampInt(ad, 1, MAX_AD, 2);
+      party.kids = clampInt(kids, 0, MAX_KIDS, 0);
+      if (ages !== null && ages !== undefined) party.ages = String(ages).slice(0, 40);
+      if (fAd !== src) fAd.value = party.ad;
+      if (fKids !== src) fKids.value = party.kids;
+      if (fAges !== src) fAges.value = party.ages;
+      fAgesFld.hidden = !party.kids;
+      partyHooks.forEach(function(fn){ fn(src); });
+      if (sumEl) summary();
+    }
 
     var today = new Date(); today = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
     var first = mStart(today), last = mStart(addMonths(first, 11));
@@ -1693,7 +1940,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       }
       else {
         s += 'Заїзд ' + shortName(selA) + ' · Виїзд ' + shortName(selB) + ' · ' + nights(Math.round((selB - selA) / 864e5));
-        if (v === 'any') s += '<small>' + freeLine(freeRooms(v, selA, selB)) + '</small>';
+        s += '<small>' + esc(partyLine()) + '.' + (v === 'any' ? ' ' + freeLine(freeRooms(v, selA, selB)) : '') + '</small>';
       }
       if (s !== lastSum) { sumEl.innerHTML = s; lastSum = s; }
       resetBtn.hidden = !selA;
@@ -1860,18 +2107,22 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
 
     [].forEach.call(f.querySelectorAll('[data-step]'), function(b){
       b.addEventListener('click', function(){
-        var v = (parseInt(g.value, 10) || 1) + parseInt(b.getAttribute('data-step'), 10);
-        g.value = Math.max(1, Math.min(MAX_GUESTS, v));
+        var step = parseInt(b.getAttribute('data-step'), 10);
+        if (b.getAttribute('data-for') === 'fKids') setParty(party.ad, party.kids + step, null);
+        else setParty(party.ad + step, party.kids, null);
       });
     });
+    fAd.addEventListener('input', function(){ if (fAd.value !== '') setParty(fAd.value, party.kids, null, fAd); });
+    fKids.addEventListener('input', function(){ if (fKids.value !== '') setParty(party.ad, fKids.value, null, fKids); });
+    [fAd, fKids].forEach(function(el){ el.addEventListener('change', function(){ setParty(fAd.value, fKids.value, null); }); });
+    fAges.addEventListener('input', function(){ setParty(party.ad, party.kids, fAges.value, fAges); });
     [].forEach.call(d.querySelectorAll('[data-room]'), function(a){
       a.addEventListener('click', function(e){
-        var v = a.getAttribute('data-room'), card = f.parentNode, n = parseInt(g.value, 10) || 0;
+        var v = a.getAttribute('data-room'), card = f.parentNode;
         e.preventDefault();
         radios.forEach(function(r){ r.checked = r.value === v; });
-        if (v === 'family' && n < 3) g.value = 4;
-        else if (v === 'std3' && n < 3) g.value = 3;
-        else if (v === 'std2' && n > 2) g.value = 2;
+        /* номер на двох: дорослих не більше двох; дітей не чіпаємо */
+        if (v === 'std2' && party.ad > 2) setParty(2, party.kids, null);
         if (f.hidden) { done.hidden = true; f.hidden = false; }
         hint = ''; validate(); showSel(); render(false);
         revealNow(card);
@@ -1931,7 +2182,7 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         'Дати: ' + human(fin.value) + ' → ' + human(fout.value) + ' (' + nights(n) + ')',
         'Календар: на момент заявки дати вільні',
         roomLine,
-        'Гостей: ' + g.value,
+        partyReq(),
         'Трансфер до витягу: ' + (transfer.checked ? 'так, потрібен' : 'не потрібен'),
         'Сауна: ' + (sauna.checked ? 'так, на один із вечорів' : 'не потрібна'),
         'Ім’я: ' + nm.value.trim(),
@@ -1988,7 +2239,9 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
        (переносимо його туди й назад), тож дати, зайнятість і підказки одні й ті самі. */
     var qbIn = d.getElementById('qbIn'), qbOut = d.getElementById('qbOut');
     var qbInV = d.getElementById('qbInV'), qbOutV = d.getElementById('qbOutV');
-    var qbG = d.getElementById('qbGuests'), qbGo = d.getElementById('qbGo');
+    var qbGo = d.getElementById('qbGo'), qb = d.getElementById('qb');
+    var qbParty = d.getElementById('qbParty'), qbPartyBtn = d.getElementById('qbPartyBtn'), qbPartyV = d.getElementById('qbPartyV');
+    var qbAd = d.getElementById('qbAd'), qbKids = d.getElementById('qbKids'), qbAges = d.getElementById('qbAges'), qbAgesFld = d.getElementById('qbAgesFld');
     var pick = d.getElementById('pick'), pickBody = d.getElementById('pickBody');
     var calPanel = cal.querySelector('.cal__panel'), calFoot = cal.querySelector('.cal__foot');
     var pickFrom = null;
@@ -2045,9 +2298,10 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
         if (e.shiftKey && i <= 0) { e.preventDefault(); t[t.length - 1].focus(); }
         else if (!e.shiftKey && (i === -1 || i === t.length - 1)) { e.preventDefault(); t[0].focus(); }
       });
-      /* «Перевірити дати»: переносимо гостей у форму, гортаємо до календаря і підсвічуємо відповідь */
+      /* «Перевірити дати»: гості вже у формі (значення спільні), гортаємо до календаря і підсвічуємо відповідь */
       qbGo.addEventListener('click', function(){
-        g.value = Math.max(1, Math.min(MAX_GUESTS, parseInt(qbG.value, 10) || 2));
+        popClose(false);
+        setParty(qbAd.value, qbKids.value, qbAges.value);
         if (f.hidden) { done.hidden = true; f.hidden = false; }
         hint = ''; validate(); showSel(); render(false);
         revealNow(f.parentNode);
@@ -2064,12 +2318,44 @@ textarea.inp{height:auto;min-height:96px;padding:13px 14px;line-height:1.45;resi
       });
     }
 
+    /* Гості на першому екрані: на широкому екрані три поля в рядку, на вужчому кнопка «2 дорослих · 0 дітей» з віконцем */
+    function qbPartySync(src){
+      if (!qbAd) return;
+      if (qbAd !== src) qbAd.value = String(party.ad);
+      if (qbKids !== src) qbKids.value = String(party.kids);
+      if (qbAges !== src) qbAges.value = party.ages;
+      qbAgesFld.hidden = !party.kids;
+      qb.classList.toggle('has-kids', party.kids > 0);
+      qbPartyV.innerHTML = '<span>' + adTxt(party.ad) + '</span><span class="qb__dot"> · </span><span>' + kidsTxt(party.kids) + '</span>';
+    }
+    function popOpen(){ qbParty.classList.add('is-open'); qbPartyBtn.setAttribute('aria-expanded', 'true'); try { qbAd.focus({ preventScroll: true }); } catch (x) { qbAd.focus(); } }
+    function popClose(back){
+      if (!qbParty || !qbParty.classList.contains('is-open')) return;
+      qbParty.classList.remove('is-open');
+      qbPartyBtn.setAttribute('aria-expanded', 'false');
+      if (back) qbPartyBtn.focus();
+    }
+    if (qbParty && qbPartyBtn && qbAd && qbKids && qbAges) {
+      partyHooks.push(qbPartySync);
+      qbAd.addEventListener('change', function(){ setParty(qbAd.value, party.kids, null, qbAd); });
+      qbKids.addEventListener('change', function(){ setParty(party.ad, qbKids.value, null, qbKids); });
+      qbAges.addEventListener('input', function(){ setParty(party.ad, party.kids, qbAges.value, qbAges); });
+      qbPartyBtn.addEventListener('click', function(){ if (qbParty.classList.contains('is-open')) popClose(false); else popOpen(); });
+      d.getElementById('qbPopDone').addEventListener('click', function(){ popClose(true); });
+      d.addEventListener('click', function(e){ if (qbParty.classList.contains('is-open') && !qbParty.contains(e.target)) popClose(false); });
+      qbParty.addEventListener('focusout', function(e){ if (e.relatedTarget && !qbParty.contains(e.relatedTarget)) popClose(false); });
+      d.addEventListener('keydown', function(e){ if (e.key === 'Escape' && qbParty.classList.contains('is-open')) { e.preventDefault(); popClose(true); } });
+      on(window.matchMedia('(max-width: 1023px)'), function(){ popClose(false); });
+    }
+    /* браузер міг відновити значення полів після «Назад»: беремо їх із форми */
+    setParty(fAd.value, fKids.value, fAges.value);
+
     /* Viber з датами: відкриваємо чат з господарями, а текст з датами кладемо в буфер обміну */
     var fViber = d.getElementById('fViber'), fViberHint = d.getElementById('fViberHint');
     if (fViber && fViberHint) fViber.addEventListener('click', function(){
       if (!selA || !selB) { fViberHint.textContent = 'Дати можна обрати в календарі вище, тоді текст з ними скопіюється сам.'; return; }
       var v = roomVal(), n = Math.round((selB - selA) / 864e5);
-      var txt = 'Добрий день! Хочемо забронювати в «Горянці»: заїзд ' + human(fin.value) + ', виїзд ' + human(fout.value) + ' (' + nights(n) + '), гостей: ' + g.value +
+      var txt = 'Добрий день! Хочемо забронювати в «Горянці»: заїзд ' + human(fin.value) + ', виїзд ' + human(fout.value) + ' (' + nights(n) + '), ' + partyLine() +
         (v === 'any' ? '.' : ', ' + ROOMS[v].lower + '.') +
         (transfer.checked ? ' Потрібен трансфер до витягу.' : '') + (sauna.checked ? ' Хочемо сауну на один із вечорів.' : '');
       var ok = function(){ fViberHint.textContent = 'Текст з датами скопійовано. Вставте його в чат Viber.'; };
